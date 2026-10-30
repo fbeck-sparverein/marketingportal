@@ -1,0 +1,5 @@
+{#- Brotkrumen: erwartet "krumen" = Liste [titel, url] -#}
+<nav class="brotkrumen container" aria-label="Sie sind hier">
+  <a href="{{ '/' | url }}">Start</a>
+  {%- for b in krumen %} <span aria-hidden="true">›</span> {% if b[1] %}<a href="{{ b[1] | url }}">{{ b[0] }}</a>{% else %}<span aria-current="page">{{ b[0] }}</span>{% endif %}{% endfor %}
+</nav>

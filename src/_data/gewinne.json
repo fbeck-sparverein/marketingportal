@@ -1,0 +1,16 @@
+{
+  "titel": "Gewinnplan 2026",
+  "gewinnchance": "1:155.000",
+  "hinweis": "Die genaue Anzahl der Geldgewinne ist abhängig vom verkauften Losvolumen.",
+  "monatlich": [
+    { "anzahl": "1x", "gewinn": "Opel Mokka", "losziffern": "7-stellig" },
+    { "anzahl": "3x", "gewinn": "Städtereise Paris (nur 1. Quartal)", "losziffern": "7-stellig" },
+    { "anzahl": "1x", "gewinn": "5.000 EUR", "losziffern": "7-stellig" },
+    { "anzahl": "1x", "gewinn": "1.000 EUR", "losziffern": "7-stellig" },
+    { "anzahl": "1x", "gewinn": "500 EUR", "losziffern": "7-stellig" },
+    { "anzahl": "7x", "gewinn": "100 EUR", "losziffern": "5-stellig" },
+    { "anzahl": "63x", "gewinn": "50 EUR", "losziffern": "4-stellig" },
+    { "anzahl": "630x", "gewinn": "10 EUR", "losziffern": "3-stellig" },
+    { "anzahl": "18.900x", "gewinn": "5 EUR", "losziffern": "2-stellig" }
+  ]
+}

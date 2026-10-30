@@ -1,0 +1,31 @@
+{#- Dateikarten-Raster. Erwartet: dateien (Liste) -#}
+{%- from "partials/icons.njk" import icon -%}
+<ul class="dateien-raster">
+  {%- for d in dateien %}
+  {%- set url = d | downloadUrl %}
+  <li class="dkarte" data-typ="{{ d.typ }}">
+    <a class="dkarte__vorschau" href="{{ url }}" aria-label="{{ d.bezeichnung }} herunterladen">
+      {%- if d.vorschau %}
+      <img src="{{ d.vorschau | url }}" alt="" loading="lazy">
+      {%- elif d._vorschau %}
+      <img src="{{ d._vorschau | url }}" alt="" loading="lazy">
+      {%- elif d.datei and d.typ == "SVG" %}
+      <img src="{{ d.datei | url }}" alt="" loading="lazy">
+      {%- else %}
+      <span class="rahmen rahmen--{{ d.typ | lower }}" style="{{ d | rahmen }}">
+        <span>{% if d.masse %}{{ d.masse }}{% elif d.seitenverhaeltnis %}{{ d.seitenverhaeltnis }}{% else %}{{ d.typ }}{% endif %}</span>
+      </span>
+      {%- endif %}
+      <span class="dkarte__typ">{{ d.typ }}</span>
+    </a>
+    <div class="dkarte__info">
+      <span class="dkarte__name">{{ d.bezeichnung }}</span>
+      <span class="dkarte__meta">{% if d.masse %}<span>{{ d.masse }} px</span> {% endif %}<span>{{ d.typ }}{% if d.groesse %} · {{ d.groesse }}{% endif %}</span></span>
+    </div>
+    <div class="dkarte__aktionen">
+      <a class="btn btn--download" href="{{ url }}">{{ icon("download", 18) }}<span>Download</span></a>
+      <button class="icon-btn js-kopieren" type="button" data-url="{{ url }}" title="Link kopieren" aria-label="Link zu {{ d.bezeichnung }} kopieren">{{ icon("link", 18) }}</button>
+    </div>
+  </li>
+  {%- endfor %}
+</ul>

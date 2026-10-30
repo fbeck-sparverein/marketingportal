@@ -1,0 +1,29 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: gruppen
+  size: 1
+  alias: g
+permalink: "/{{ g.schluessel }}/"
+eleventyComputed:
+  title: "{{ g.titel }}"
+---
+{%- set krumen = [[g.titel,""]] -%}{% include "partials/brotkrumen.njk" %}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">{{ g.titel }}</p>
+    <h1>{{ g.titel }}</h1>
+    <p class="lead">{{ g.text }}</p>
+  </div>
+</section>
+<section class="band">
+  <div class="container bereichs-raster bereichs-raster--gross">
+    {%- for b in collections.bereiche | bereicheIn(g.schluessel) %}
+    <a class="bkarte bkarte--gross" href="{{ b | bereichUrl | url }}">
+      <strong>{{ b.data.title }}</strong>
+      <span>{{ b.data.kurz }}</span>
+      <span class="bkarte__fuss">{% if b.data.dateien | length %}{{ b.data.dateien | length }} {{ "Datei" if b.data.dateien | length == 1 else "Dateien" }}{% endif %}{% if b.data.aktion %}{% if b.data.dateien | length %} · {% endif %}{{ b.data.aktion.text }}{% endif %}</span>
+    </a>
+    {%- endfor %}
+  </div>
+</section>

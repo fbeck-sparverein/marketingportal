@@ -1,0 +1,105 @@
+---
+layout: layouts/base.njk
+title: Marketingportal
+bodyClass: start
+---
+{%- from "partials/icons.njk" import icon -%}
+{%- set aktionen = collections.kampagnen | aktuelleZuerst -%}
+
+<section class="hero">
+  <div class="container">
+    <div class="hero__kopf">
+      <p class="eyebrow">Marketingportal GewinnSparen</p>
+      <h1>Alles für Ihren Vertrieb –<br> <span class="hervor">auf einen Blick.</span></h1>
+      <p class="lead">Aktuelle Aktionen, Online-Formate, Werbemittel und Termine für Sparkassen und Volksbanken im Saarland.</p>
+      <button class="hero__suche js-suche-auf" type="button">
+        {{ icon("suche", 22) }}<span class="nur-gross">Was suchen Sie? z. B. GAA-Motiv, Plakat, Logo …</span><span class="nur-klein">Motiv, Plakat, Logo suchen …</span><kbd>/</kbd>
+      </button>
+    </div>
+
+    <h2 class="hero__zwischen">Was läuft gerade?</h2>
+    <div class="aktionen-raster">
+      {%- for k in aktionen %}
+        {% include "partials/aktionskarte.njk" %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="container">
+    <div class="abschnitt-kopf">
+      <h2>Schnellzugriff</h2>
+      <p>Die häufigsten Wege – ein Klick.</p>
+    </div>
+    <div class="schnell">
+      {%- for s in schnellzugriff.kacheln %}
+      <a class="schnell__kachel{% if '{institut}' in s.url %} js-institut-link{% endif %}" href="{{ s.url | replace('{institut}', 'sparkassen') | url }}"{% if '{institut}' in s.url %} data-vorlage="{{ s.url | url }}"{% endif %}>
+        <span class="schnell__icon">{{ icon(s.icon, 24) }}</span>
+        <span><strong>{{ s.titel }}</strong><span>{{ s.text }}</span></span>
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="band band--grau">
+  <div class="container drei-zu-zwei">
+    <div>
+      <div class="abschnitt-kopf abschnitt-kopf--zeile">
+        <h2>Nächste Termine</h2>
+        <a class="mehr" href="{{ '/termine-gewinne/' | url }}">Alle Termine {{ icon("pfeil", 16) }}</a>
+      </div>
+      <ol class="termine-liste js-termine" data-heute="{{ '' | heuteIso }}">
+        {%- for m in termine.sparmonate %}
+        {%- for e in [["Losverkauf startet", m.beginn], ["Losverkauf endet", m.ende], ["Verlosung", m.verlosung]] %}
+        <li class="termin" data-datum="{{ e[1] }}" hidden>
+          <span class="termin__datum"><strong>{{ e[1] | truncate(6, true, '') }}</strong><span>{{ e[1] | replace(e[1] | truncate(6, true, ''), '') }}</span></span>
+          <span class="termin__text"><strong>{{ e[0] }}</strong><span>Sparmonat {{ m.monat }}{% if m.hervorheben %} · Weihnachtsauslosung{% endif %}</span></span>
+          <span class="termin__in js-in"></span>
+        </li>
+        {%- endfor %}
+        {%- endfor %}
+      </ol>
+    </div>
+    <div>
+      <div class="abschnitt-kopf abschnitt-kopf--zeile"><h2>Neu im Portal</h2></div>
+      <ul class="neu-liste">
+        {%- set bereichsnamen = { "aktionen": "Aktion", "formate": "Online-Formate", "werbemittel": "Werbemittel", "vertrieb": "Vertrieb", "service": "Service", "termine-gewinne": "Termine & Gewinne" } %}
+        {%- for n in collections.neuigkeiten | head(5) %}
+        <li><a href="{{ n.data.link | url }}">
+          <span class="neu-liste__text"><strong>{{ n.data.title }}</strong><span>{% if loop.index <= 2 %}<span class="chip chip--neu chip--mini">Neu</span>{% endif %}{{ bereichsnamen[n.data.link.split("/")[1]] or "Portal" }}</span></span>
+          {{ icon("pfeil", 18) }}</a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="container">
+    <div class="abschnitt-kopf"><h2>Für Ihre Aktionen vor Ort</h2><p>Werbemittel, die Sie kostenlos bestellen oder ausleihen können.</p></div>
+    <div class="bereichs-raster">
+      {%- for b in collections.bereiche | bereicheIn("werbemittel") %}
+      <a class="bkarte" href="{{ b | bereichUrl | url }}">
+        <strong>{{ b.data.title }}</strong>
+        <span>{{ b.data.kurz }}</span>
+        {% if b.data.aktion %}<span class="chip chip--bald chip--mini">{{ b.data.aktion.text }}</span>{% endif %}
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="band band--blau">
+  <div class="container kontakt-streifen">
+    <div>
+      <h2>Fragen oder ein individuelles Format?</h2>
+      <p>Das Team vom Sparverein hilft gerne – auch bei Social-Media-Formaten, Azubi-Projekten oder der Ausleihe von Promomaterial.</p>
+    </div>
+    <div class="kontakt-streifen__daten">
+      <span>{{ icon("telefon", 20) }} {{ site.telefon }}</span>
+      <a href="mailto:{{ site.email }}">{{ icon("mail", 20) }} {{ site.email }}</a>
+    </div>
+  </div>
+</section>

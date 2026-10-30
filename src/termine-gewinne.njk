@@ -1,0 +1,47 @@
+---
+layout: layouts/base.njk
+title: Termine & Gewinne
+permalink: /termine-gewinne/
+---
+{%- set krumen = [["Termine & Gewinne",""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- set wa = collections.kampagnen | finde('fileSlug', 'weihnachtsauslosung-2026') -%}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">GewinnSparen {{ termine.jahr }}</p>
+    <h1>Termine &amp; Gewinne</h1>
+    <p class="lead">{{ termine.hinweis }}</p>
+  </div>
+</section>
+<section class="band" id="termine">
+  <div class="container">
+    <div class="abschnitt-kopf abschnitt-kopf--zeile"><h2>Sparmonate {{ termine.jahr }}</h2><span class="hinweis-klein">Der aktuelle Sparmonat ist markiert.</span></div>
+    <div class="tabelle-wrap" tabindex="0" role="region" aria-label="Termine der Sparmonate">
+      <table class="tabelle js-termintabelle">
+        <thead><tr><th scope="col">Sparmonat</th><th scope="col">Beginn Verkauf</th><th scope="col">Ende Verkauf</th><th scope="col">Ende Storno</th><th scope="col">Verlosung</th><th scope="col">Auszahlung Sparguthaben</th><th scope="col">Auszahlung Gewinne</th></tr></thead>
+        <tbody>
+          {%- for m in termine.sparmonate %}
+          <tr data-beginn="{{ m.beginn }}" data-ende="{{ m.ende }}"{% if m.hervorheben %} class="aktion-monat"{% endif %}>
+            <th scope="row">{{ m.monat }}{% if m.hervorheben %} <span class="chip chip--bald chip--mini">Weihnachtsauslosung</span>{% endif %}<span class="chip chip--laeuft chip--mini js-aktuell" hidden>Aktuell</span></th>
+            <td>{{ m.beginn }}</td><td>{{ m.ende }}</td><td>{{ m.storno }}</td><td><strong>{{ m.verlosung }}</strong></td><td>{{ m.sparguthaben }}</td><td>{{ m.gewinne }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<section class="band band--grau" id="gewinne">
+  <div class="container zwei-spalten">
+    <div class="karte">
+      <h2>{{ gewinne.titel }} – monatlich</h2>
+      <table class="tabelle tabelle--kompakt">
+        <thead><tr><th scope="col">Anzahl</th><th scope="col">Gewinn</th><th scope="col">Losziffern</th></tr></thead>
+        <tbody>{% for g in gewinne.monatlich %}<tr><td>{{ g.anzahl }}</td><td>{{ g.gewinn }}</td><td>{{ g.losziffern }}</td></tr>{% endfor %}</tbody>
+      </table>
+      <p class="klein">Gewinnchance auf einen der Hauptgewinne: {{ gewinne.gewinnchance }}. {{ gewinne.hinweis }}</p>
+    </div>
+    <div class="stapel">
+      {%- for k in collections.kampagnen | aktuelleZuerst %}{% if not k.data.dauerhaft %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endfor %}
+    </div>
+  </div>
+</section>

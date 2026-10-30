@@ -1,0 +1,46 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: collections.bereiche
+  size: 1
+  alias: b
+permalink: "{{ b | bereichUrl }}"
+eleventyComputed:
+  title: "{{ b.data.title }}"
+---
+{%- set krumen = [[(gruppen | finde("schluessel", b.data.gruppe)).titel,"/" + b.data.gruppe + "/"],[b.data.title,""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- from "partials/icons.njk" import icon -%}
+{%- set g = gruppen | finde('schluessel', b.data.gruppe) -%}
+<section class="seitenkopf">
+  <div class="container seitenkopf__grid">
+    <div>
+      <p class="eyebrow">{{ g.titel }}</p>
+      <h1>{{ b.data.title }}</h1>
+      <div class="lead prosa">{{ b.templateContent | safe }}</div>
+    </div>
+    {%- if b.data.hinweis or b.data.aktion %}
+    <aside class="hinweis-box">
+      {{ icon("info", 22) }}
+      {% if b.data.hinweis %}<p>{{ b.data.hinweis }}</p>{% endif %}
+      {% if b.data.aktion %}<a class="btn btn--primaer" href="{{ b.data.aktion.link }}">{{ b.data.aktion.text }}</a><p class="klein">{{ site.email }} · {{ site.telefon }}</p>{% endif %}
+    </aside>
+    {%- endif %}
+  </div>
+</section>
+{%- if b.data.dateien | length %}
+<section class="band">
+  <div class="container">
+    {% set dateien = b.data.dateien %}{% include "partials/dateien.njk" %}
+  </div>
+</section>
+{%- endif %}
+<section class="band band--grau">
+  <div class="container">
+    <div class="abschnitt-kopf"><h2>Mehr aus {{ g.titel }}</h2></div>
+    <div class="bereichs-raster">
+      {%- for b2 in collections.bereiche | bereicheIn(b.data.gruppe) %}{% if b2.fileSlug != b.fileSlug %}
+      <a class="bkarte" href="{{ b2 | bereichUrl | url }}"><strong>{{ b2.data.title }}</strong><span>{{ b2.data.kurz }}</span></a>
+      {% endif %}{%- endfor %}
+    </div>
+  </div>
+</section>

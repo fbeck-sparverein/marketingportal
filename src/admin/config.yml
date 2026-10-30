@@ -1,0 +1,260 @@
+# Redaktionsoberfläche (Decap CMS) – Marketingportal Sparverein
+# Anmeldung über Netlify Identity + Git Gateway (Redakteure brauchen kein GitHub-Konto).
+# „Veröffentlichen“ geht direkt online (kein Freigabe-Workflow).
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Nur für lokale Tests auf dem eigenen Rechner ("npm run cms"); online ohne Wirkung
+local_backend: true
+
+locale: de
+logo_url: /assets/img/kleeblatt.svg
+site_url: https://marketing.sparverein.de
+display_url: https://marketing.sparverein.de
+
+media_folder: src/assets/uploads
+public_folder: /assets/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+
+  # ───────────────────────────── Aktionen ─────────────────────────────
+  - name: kampagnen
+    media_folder: /src/assets/uploads/kampagnen
+    public_folder: /assets/uploads/kampagnen
+    label: Aktionen
+    label_singular: Aktion
+    description: Jede Aktion bekommt automatisch eine eigene Seite, einen Platz auf der Startseite und im Menü. Der Status (läuft / startet in … Tagen / beendet) ergibt sich aus Start- und Enddatum.
+    folder: src/kampagnen
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} – {{zeitraum}}"
+    fields:
+      - { label: Titel, name: title, widget: string }
+      - { label: Untertitel, name: untertitel, widget: string, required: false, hint: "z. B. Juwelier-Gutschein" }
+      - { label: Art, name: typ, widget: select, options: [Sonderauslosung, Quartalskampagne, Produkt, Aktion] }
+      - { label: Start, name: start, widget: datetime, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false }
+      - { label: Ende, name: ende, widget: datetime, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false }
+      - { label: Dauerhaft (ohne Enddatum), name: dauerhaft, widget: boolean, default: false, required: false }
+      - { label: Zeitraum (Anzeige), name: zeitraum, widget: string, hint: "z. B. Sparmonat November · Losverkauf 11.11. bis 10.12.2026" }
+      - { label: Verlosung am, name: verlosung, widget: string, required: false }
+      - { label: Kurztext (Teaser), name: teaser, widget: text }
+      - { label: Highlights / Gewinne, name: highlights, widget: list, min: 3, max: 3, hint: "Genau drei kurze Punkte, z. B. „1x Opel Mokka“ – erscheinen auf der Startseite und der Aktionsseite.", field: { label: Punkt, name: punkt, widget: string } }
+      - label: Kampagnensteckbrief
+        name: steckbrief
+        widget: object
+        required: false
+        fields:
+          - { label: Linktext, name: text, widget: string, default: Kampagnensteckbrief }
+          - { label: Link oder Datei, name: link, widget: file, required: false }
+          - { label: Dateigröße, name: groesse, widget: string, required: false }
+      - { label: Beschreibung, name: body, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+      - { label: Titelbild, name: bild, widget: image, hint: "Pflicht: Kampagnenmotiv für den Kopfbereich der Aktionsseite – Format 1453×640 px (wie der „Header Marketingportal“)" }
+      - label: Beispiele im Einsatz
+        name: beispiele
+        widget: list
+        required: false
+        label_singular: Beispiel
+        summary: "{{fields.beschriftung}}"
+        hint: "Mockups, die zeigen, wie die Formate eingesetzt aussehen"
+        fields:
+          - { label: Bild, name: bild, widget: image }
+          - { label: Beschriftung, name: beschriftung, widget: string, required: false, hint: "z. B. „Internet-Filiale“ oder „Geldautomat“" }
+      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 10 }
+
+  # ───────────────────────────── Formate ─────────────────────────────
+  - name: formate
+    media_folder: /src/assets/uploads/formate
+    public_folder: /assets/uploads/formate
+    label: Online-Formate
+    label_singular: Formatpaket
+    description: >-
+      Ein Formatpaket ist ein Kanal einer Aktion (z. B. „Internet-Filiale“ für Sparkassen) mit allen Dateien.
+      Es erscheint automatisch auf der Aktionsseite und unter „Online-Formate“.
+    folder: src/formate
+    create: true
+    slug: "{{kampagne}}-{{zielgruppe}}-{{slug}}"
+    summary: "{{title}} · {{zielgruppe}} · {{kampagne}}"
+    sortable_fields: [title, kampagne, zielgruppe]
+    view_filters:
+      - { label: Sparkassen, field: zielgruppe, pattern: sparkassen }
+      - { label: Volksbanken, field: zielgruppe, pattern: volksbanken }
+      - { label: Social Media, field: zielgruppe, pattern: social }
+      - { label: Print, field: zielgruppe, pattern: print }
+    view_groups:
+      - { label: Aktion, field: kampagne }
+    fields:
+      - { label: Kanal, name: title, widget: string, hint: "z. B. Internet-Filiale, App & IAM, GAA & Bildschirme" }
+      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title] }
+      - label: Für
+        name: zielgruppe
+        widget: select
+        options:
+          - { label: Sparkassen, value: sparkassen }
+          - { label: Volksbanken, value: volksbanken }
+          - { label: Social Media, value: social }
+          - { label: Print, value: print }
+      - { label: Kurzbeschreibung, name: beschreibung, widget: text, required: false }
+      - { label: Link zum Ordner (z. B. Nextcloud), name: ordner, widget: string, required: false }
+      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 10, hint: "Kleinere Zahl = weiter oben" }
+      - label: Dateien
+        name: dateien
+        widget: list
+        label_singular: Datei
+        summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+        collapsed: true
+        fields:
+          - { label: Bezeichnung, name: bezeichnung, widget: string, hint: "Sprechender Name, z. B. „Bild-Header 1“ oder „Plakat Weihnachtsauslosung“" }
+          - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
+          - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
+          - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
+          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, BMP, PCX, SVG, PDF, MP4, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
+          - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
+          - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
+          - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
+
+  # ───────────────────────────── Werbemittel, Vertrieb, Service ─────────────────────────────
+  - name: bereiche
+    media_folder: /src/assets/uploads/bereiche
+    public_folder: /assets/uploads/bereiche
+    label: Werbemittel, Vertrieb & Service
+    label_singular: Seite
+    description: Inhaltsseiten mit Downloads, z. B. Flyer & Plakate, Streuartikel, Marketingplaner oder Logos.
+    folder: src/bereiche
+    create: true
+    slug: "{{gruppe}}-{{slug}}"
+    summary: "{{gruppe}} › {{title}}"
+    view_groups:
+      - { label: Bereich, field: gruppe }
+    fields:
+      - { label: Titel, name: title, widget: string }
+      - label: Bereich
+        name: gruppe
+        widget: select
+        options:
+          - { label: Werbemittel, value: werbemittel }
+          - { label: Vertrieb, value: vertrieb }
+          - { label: Service & Downloads, value: service }
+      - { label: Kurzbeschreibung (Menü & Kacheln), name: kurz, widget: string }
+      - { label: Einleitung, name: body, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+      - { label: Hinweis-Box, name: hinweis, widget: text, required: false }
+      - label: Aktions-Button
+        name: aktion
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: Text, name: text, widget: string, hint: "z. B. Bestellung per E-Mail senden" }
+          - { label: Link, name: link, widget: string, hint: "z. B. mailto:info@sparverein.de?subject=Bestellung" }
+      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 10 }
+      - label: Dateien
+        name: dateien
+        widget: list
+        label_singular: Datei
+        summary: "{{fields.bezeichnung}} – {{fields.typ}}"
+        collapsed: true
+        required: false
+        fields:
+          - { label: Bezeichnung, name: bezeichnung, widget: string, hint: "Sprechender Name, z. B. „Bild-Header 1“ oder „Plakat Weihnachtsauslosung“" }
+          - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
+          - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
+          - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
+          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, BMP, PCX, SVG, PDF, MP4, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
+          - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
+          - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
+          - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
+
+  # ───────────────────────────── Neuigkeiten ─────────────────────────────
+  - name: neuigkeiten
+    label: Neu im Portal
+    label_singular: Neuigkeit
+    folder: src/neuigkeiten
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: Überschrift, name: title, widget: string }
+      - { label: Link, name: link, widget: string, required: false, hint: "z. B. /vertrieb/marketingplaner/" }
+      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 1, hint: "1 = ganz oben; die ersten beiden bekommen das Etikett „Neu“" }
+
+  # ───────────────────────────── Einstellungen ─────────────────────────────
+  - name: einstellungen
+    label: Termine, Gewinne & Kontakt
+    editor: { preview: false }
+    files:
+      - name: termine
+        label: Termine (Sparmonate)
+        file: src/_data/termine.json
+        fields:
+          - { label: Jahr, name: jahr, widget: string }
+          - { label: Hinweistext, name: hinweis, widget: text }
+          - label: Sparmonate
+            name: sparmonate
+            widget: list
+            label_singular: Sparmonat
+            summary: "{{fields.monat}} – Verlosung {{fields.verlosung}}"
+            collapsed: true
+            fields:
+              - { label: Sparmonat, name: monat, widget: string, hint: "z. B. 11/2026" }
+              - { label: Beginn Verkauf, name: beginn, widget: string }
+              - { label: Ende Verkauf, name: ende, widget: string }
+              - { label: Ende Storno, name: storno, widget: string }
+              - { label: Verlosung, name: verlosung, widget: string }
+              - { label: Auszahlung Sparguthaben, name: sparguthaben, widget: string }
+              - { label: Auszahlung Gewinne, name: gewinne, widget: string }
+              - { label: Hervorheben (Aktionsmonat), name: hervorheben, widget: boolean, default: false }
+      - name: gewinne
+        label: Gewinnplan
+        file: src/_data/gewinne.json
+        fields:
+          - { label: Titel, name: titel, widget: string }
+          - { label: Gewinnchance, name: gewinnchance, widget: string }
+          - { label: Hinweis, name: hinweis, widget: text }
+          - label: Monatliche Gewinne
+            name: monatlich
+            widget: list
+            summary: "{{fields.anzahl}} {{fields.gewinn}}"
+            fields:
+              - { label: Anzahl, name: anzahl, widget: string }
+              - { label: Gewinn, name: gewinn, widget: string }
+              - { label: Losziffern, name: losziffern, widget: string }
+      - name: site
+        label: Kontakt & Pflichtangaben
+        file: src/_data/site.json
+        fields:
+          - { label: Seitentitel, name: titel, widget: string }
+          - { label: Untertitel, name: untertitel, widget: string }
+          - { label: Organisation, name: organisation, widget: string }
+          - { label: Abteilung, name: abteilung, widget: string }
+          - { label: Straße, name: strasse, widget: string }
+          - { label: PLZ & Ort, name: ort, widget: string }
+          - { label: Telefon, name: telefon, widget: string }
+          - { label: E-Mail, name: email, widget: string }
+          - { label: Glücksspiel-Pflichthinweis, name: pflichthinweis, widget: text, hint: "Erscheint im Fußbereich jeder Seite" }
+          - { label: Impressum (Link), name: impressum, widget: string }
+          - { label: Datenschutz (Link), name: datenschutz, widget: string }
+          - label: Social Media & Web
+            name: social
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Link, name: url, widget: string }
+      - name: schnellzugriff
+        label: Schnellzugriff (Startseite)
+        file: src/_data/schnellzugriff.json
+        fields:
+          - label: Kacheln
+            name: kacheln
+            widget: list
+            summary: "{{fields.titel}}"
+            fields:
+              - { label: Titel, name: titel, widget: string }
+              - { label: Untertitel, name: text, widget: string }
+              - { label: Link, name: url, widget: string, hint: "{institut} wird automatisch durch sparkassen/volksbanken ersetzt" }
+              - { label: Symbol, name: icon, widget: select, options: [bild, druck, paket, kalender, dokument, stern] }

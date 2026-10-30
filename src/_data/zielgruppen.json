@@ -1,0 +1,6 @@
+[
+  { "schluessel": "sparkassen", "titel": "Sparkassen", "ueberschrift": "Online-Formate Sparkassen", "text": "Banner und Bilder für Internet-Filiale, App, Geldautomaten, Kontoauszugsdrucker und Filialbildschirme.", "icon": "S", "seite": true },
+  { "schluessel": "volksbanken", "titel": "Volksbanken", "ueberschrift": "Online-Formate Volksbanken", "text": "Motive für Online-Filiale (#webbank), Geldautomaten und Bildschirme.", "icon": "V", "seite": true },
+  { "schluessel": "social", "titel": "Social Media", "ueberschrift": "Social-Media-Formate", "text": "Posts und Motive für Ihre Social-Media-Kanäle – zu jeder Aktion.", "icon": "#", "seite": true },
+  { "schluessel": "print", "titel": "Print", "ueberschrift": "Flyer & Plakate", "text": "Druckvorlagen als PDF.", "icon": "P", "seite": false }
+]

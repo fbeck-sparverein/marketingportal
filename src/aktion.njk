@@ -1,0 +1,106 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: collections.kampagnen
+  size: 1
+  alias: k
+permalink: "/aktionen/{{ k.fileSlug }}/"
+eleventyComputed:
+  title: "{{ k.data.title }}"
+---
+{%- set krumen = [["Aktionen","/aktionen/"],[k.data.title,""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- from "partials/icons.njk" import icon -%}
+{%- set st = k.data | status -%}
+{%- set alle = collections.formate | formateVon(k.fileSlug) -%}
+
+<section class="aktion-kopf aktion-kopf--bild{% if not k.data.bild %} aktion-kopf--ohne-bild{% endif %}" data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">
+  <div class="container aktion-kopf__grid">
+    <div>
+      <p class="aktion-kopf__meta"><span class="chip chip--{{ st.code }} js-status">{{ st.text }}</span> <span>{{ k.data.typ }}</span></p>
+      <h1>{{ k.data.title }}{% if k.data.untertitel %}<span class="untertitel">{{ k.data.untertitel }}</span>{% endif %}</h1>
+      <p class="lead">{{ k.data.teaser }}</p>
+      <div class="aktion-kopf__knoepfe">
+        <a class="btn btn--primaer" href="#formate">Zu den Formaten {{ icon("runter", 18) }}</a>
+        {% if k.data.steckbrief %}<a class="btn btn--hell" href="{{ k.data.steckbrief.link }}">{{ icon("dokument", 18) }} {{ k.data.steckbrief.text }} <small>PDF{% if k.data.steckbrief.groesse %}, {{ k.data.steckbrief.groesse }}{% endif %}</small></a>{% endif %}
+      </div>
+    </div>
+    {%- if k.data.bild %}<figure class="kopfbild"><img src="{{ k.data.bild | verkleinert(1200) | url }}" alt="Kampagnenmotiv {{ k.data.title }}"></figure>{% endif %}
+  </div>
+</section>
+<div class="container">
+  <div class="faktenleiste">
+    <div><span class="faktenleiste__titel">Zeitraum</span><strong>{{ k.data.zeitraum }}</strong>{% if k.data.verlosung %}<span class="faktenleiste__klein">Verlosung am {{ k.data.verlosung }}</span>{% endif %}</div>
+    <div class="faktenleiste__gewinne"><span class="faktenleiste__titel">Highlights</span><ul>{% for h in k.data.highlights %}<li>{{ h }}</li>{% endfor %}</ul></div>
+  </div>
+</div>
+
+<section class="band band--prosa">
+  <div class="container">
+    <div class="prosa">{{ k.templateContent | safe }}</div>
+  </div>
+  {%- if k.data.beispiele and k.data.beispiele.length %}
+  <div class="container beispiele">
+    <h2 class="beispiele__titel">So sieht's im Einsatz aus</h2>
+    <ul class="beispiele__raster">
+      {%- for b in k.data.beispiele %}
+      <li><a class="js-gross" href="{{ b.bild | url }}" data-titel="{{ b.beschriftung }}"><img src="{{ b.bild | verkleinert(720) | url }}" alt="{{ b.beschriftung or 'Beispiel' }}" loading="lazy">{% if b.beschriftung %}<span>{{ b.beschriftung }}</span>{% endif %}</a></li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <dialog class="leuchtkasten" id="leuchtkasten" aria-label="Beispiel in groß">
+    <button class="leuchtkasten__zu icon-btn" type="button" aria-label="Schließen">{{ icon("x", 22) }}</button>
+    <button class="leuchtkasten__pfeil leuchtkasten__pfeil--zurueck" type="button" aria-label="Vorheriges Beispiel">‹</button>
+    <figure><img alt=""><figcaption></figcaption></figure>
+    <button class="leuchtkasten__pfeil leuchtkasten__pfeil--vor" type="button" aria-label="Nächstes Beispiel">›</button>
+  </dialog>
+  {%- endif %}
+</section>
+
+<section class="band band--grau" id="formate">
+  <div class="container">
+    <div class="abschnitt-kopf abschnitt-kopf--zeile">
+      <h2>Formate zur Aktion</h2>
+      <span class="hinweis-klein">{{ alle | anzahlDateien }} Dateien</span>
+    </div>
+
+    <div class="reiter" role="tablist" aria-label="Formate nach Zielgruppe">
+      {%- for z in zielgruppen %}
+      {%- set liste = collections.formate | formateVon(k.fileSlug, z.schluessel) %}
+      {%- if liste | length %}
+      <button class="reiter__knopf js-reiter" role="tab" type="button" id="tab-{{ z.schluessel }}" aria-controls="panel-{{ z.schluessel }}" data-ziel="{{ z.schluessel }}" aria-selected="{{ 'true' if loop.first else 'false' }}">
+        {{ z.titel }} <span class="zahl">{{ liste | anzahlDateien }}</span>
+      </button>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+
+    {%- for z in zielgruppen %}
+    {%- set liste = collections.formate | formateVon(k.fileSlug, z.schluessel) %}
+    {%- if liste | length %}
+    <div class="reiter__panel" role="tabpanel" id="panel-{{ z.schluessel }}" aria-labelledby="tab-{{ z.schluessel }}" data-ziel="{{ z.schluessel }}"{% if not loop.first %} hidden{% endif %}>
+      {%- if liste | length > 1 %}
+      <nav class="sprungmarken" aria-label="Kanäle">{% for f in liste %}<a href="#{{ f.fileSlug }}">{{ f.data.title }} <span>{{ f.data.dateien | length }}</span></a>{% endfor %}</nav>
+      {%- endif %}
+      {%- for f in liste %}
+      <article class="kanal" id="{{ f.fileSlug }}">
+        <header class="kanal__kopf">
+          <div><h3>{{ f.data.title }}</h3>{% if f.data.beschreibung %}<p>{{ f.data.beschreibung }}</p>{% endif %}</div>
+          {% if f.data.ordner %}<a class="btn btn--rand btn--klein" href="{{ f.data.ordner }}">Ordner öffnen</a>{% endif %}
+        </header>
+        {% set dateien = f.data.dateien %}{% include "partials/dateien.njk" %}
+      </article>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="band">
+  <div class="container">
+    <div class="abschnitt-kopf"><h2>Weitere Aktionen</h2></div>
+    <div class="aktionen-raster aktionen-raster--klein">
+      {%- set dieseAktion = k.fileSlug %}{%- for k2 in collections.kampagnen | aktuelleZuerst %}{% if k2.fileSlug != dieseAktion %}{% set k = k2 %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endfor %}
+    </div>
+  </div>
+</section>

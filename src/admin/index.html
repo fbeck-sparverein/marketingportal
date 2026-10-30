@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Redaktion · Marketingportal Sparverein</title>
+  <link rel="icon" href="/assets/img/kleeblatt.svg" type="image/svg+xml">
+  <!-- Anmeldung der Redakteure (Netlify Identity) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Decap CMS wird lokal ausgeliefert (kein CDN, keine Drittanbieter-Verbindung) -->
+  <script src="decap-cms.js"></script>
+  <script>
+    // Live-Vorschau im Editor im Sparverein-Look
+    CMS.registerPreviewStyle("/assets/css/site.css");
+    const h = window.h;
+
+    function rahmen(masse) {
+      const m = String(masse || "").match(/(\d+)\s*[x×]\s*(\d+)/i);
+      const w = m ? +m[1] : 4, hh = m ? +m[2] : 3;
+      const s = Math.min(104 / w, 60 / hh);
+      return { width: Math.round(w * s) + "px", height: Math.round(hh * s) + "px" };
+    }
+
+    // Vorschau: Formatpaket (so sieht es auf der Website aus)
+    const FormatVorschau = createClass({
+      render() {
+        const e = this.props.entry;
+        const get = (k) => e.getIn(["data", k]);
+        const dateien = (get("dateien") || []).toJS ? get("dateien").toJS() : (get("dateien") || []);
+        return h("div", { style: { padding: "32px 24px" } },
+          h("article", {},
+            h("header", { style: { marginBottom: "20px" } },
+              h("div", {},
+                h("h2", {}, get("title") || "Kanal"),
+                h("p", {}, get("beschreibung") || "")
+              ),
+              get("ordner") ? h("a", { className: "btn btn--rand", href: get("ordner") }, "Alle als Ordner öffnen") : null
+            ),
+            h("ul", { className: "dateien-raster" },
+              dateien.map((d, i) => {
+                const endung = String(d.datei || "").split(".").pop().toUpperCase();
+                const typ = d.datei ? (endung === "JPEG" ? "JPG" : endung) : d.typ;
+                const istBild = ["JPG", "PNG", "GIF", "SVG", "WEBP"].includes(typ);
+                const quelle = d.vorschau || (istBild ? d.datei : null);
+                const bild = quelle ? this.props.getAsset(quelle) : null;
+                return h("li", { className: "dkarte", key: i },
+                  h("div", { className: "dkarte__vorschau" },
+                    bild ? h("img", { src: bild.toString(), alt: "" }) :
+                      h("span", { className: "rahmen", style: rahmen(d.masse) }, h("span", {}, d.masse || typ || "?")),
+                    typ ? h("span", { className: "dkarte__typ" }, typ) : null
+                  ),
+                  h("div", { className: "dkarte__info" },
+                    h("span", { className: "dkarte__name" }, d.bezeichnung || "Neue Datei"),
+                    h("span", { className: "dkarte__meta" }, d.datei ? "Maße und Größe werden beim Veröffentlichen ermittelt"
+                      : [d.masse && d.masse + " px", d.typ, d.groesse].filter(Boolean).join(" · ") || "Noch keine Datei hochgeladen")
+                  ),
+                  h("div", { className: "dkarte__aktionen" }, h("span", { className: "btn btn--download" }, "Download"))
+                );
+              })
+            )
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate("formate", FormatVorschau);
+
+    // Vorschau: Kampagne (Aktions-Box der Startseite)
+    const KampagnenVorschau = createClass({
+      render() {
+        const e = this.props.entry;
+        const get = (k) => e.getIn(["data", k]);
+        const hl = get("highlights") ? get("highlights").toJS() : [];
+        const tag = (d) => d ? new Date(String(d).slice(0,10) + "T00:00:00") : null;
+        const heute = new Date(); heute.setHours(0,0,0,0);
+        const s = tag(get("start")), en = tag(get("ende"));
+        let code = "dauerhaft", text = "Dauerhaft verfügbar";
+        if (!get("dauerhaft")) {
+          if (s && heute < s) { code = "bald"; text = "Startet in " + Math.round((s - heute)/864e5) + " Tagen"; }
+          else if (en && heute > en) { code = "beendet"; text = "Beendet"; }
+          else if (en) { code = "laeuft"; text = "Läuft · noch " + Math.round((en - heute)/864e5) + " Tage"; }
+          else { code = "laeuft"; text = "Läuft"; }
+        }
+        return h("div", { style: { padding: "32px 24px", background: "#f4f6f8", minHeight: "100vh" } },
+          h("p", { style: { fontSize: "13px", color: "#575757", margin: "0 0 12px" } }, "So erscheint die Aktion auf der Startseite:"),
+          h("div", { className: "akarte akarte--gross akarte--" + code, style: { maxWidth: "520px" } },
+            h("div", { className: "akarte__kopf" },
+              h("span", { className: "akarte__typ" }, get("typ") || "Aktion"),
+              h("span", { className: "chip chip--" + code }, text)),
+            h("h3", { className: "akarte__titel" }, get("title") || "Titel",
+              get("untertitel") ? h("span", {}, " – " + get("untertitel")) : null),
+            h("p", { className: "akarte__zeit" }, get("zeitraum") || ""),
+            hl.length ? h("ul", { className: "akarte__highlights" }, hl.map((g, i) => h("li", { key: i }, typeof g === "string" ? g : g.punkt))) : null,
+            h("p", { className: "akarte__teaser" }, get("teaser") || "")
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate("kampagnen", KampagnenVorschau);
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Netlify: baut die Website bei jeder Änderung im Repository automatisch neu
+[build]
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Verkleinerte Vorschaubilder ändern ihren Namen bei jeder Änderung → dürfen lange gecacht werden
+[[headers]]
+  for = "/assets/vorschau/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

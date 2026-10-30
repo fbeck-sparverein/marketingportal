@@ -1,0 +1,128 @@
+{%- from "partials/icons.njk" import icon -%}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if title and title != site.titel %}{{ title }} · {% endif %}{{ site.titel }} · {{ site.organisation }}</title>
+  <meta name="description" content="{{ beschreibung or 'Aktionen, Online-Formate, Werbemittel, Termine und Downloads rund um GewinnSparen für Sparkassen und Volksbanken im Saarland.' }}">
+  {%- if not umgebung.indexieren %}<meta name="robots" content="noindex">{% endif %}
+  <link rel="icon" href="{{ '/assets/img/kleeblatt.svg' | url }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | url }}">
+  <script>try{var i=localStorage.getItem('sv-institut');if(i)document.documentElement.dataset.institut=i;}catch(e){}</script>
+  <script defer src="{{ '/assets/js/site.js' | url }}"></script>
+  <script>/* Einladungs- und Passwort-Links fürs Redaktionssystem landen auf der Startseite → weiter zu /admin/ */
+  if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) location.replace("/admin/" + location.hash);</script>
+</head>
+<body class="{{ bodyClass }}">
+  <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__claim">{{ site.untertitel }}</span>
+      <div class="institut-wahl" role="group" aria-label="Meine Formate anzeigen für">
+        <span class="institut-wahl__label">Ich bin bei einer</span>
+        <button type="button" class="js-institut" data-wert="sparkassen" aria-pressed="false">Sparkasse</button>
+        <button type="button" class="js-institut" data-wert="volksbanken" aria-pressed="false">Volksbank</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="kopf">
+    <div class="container kopf__inner">
+      <a class="kopf__logo" href="{{ '/' | url }}" aria-label="Marketingportal – zur Startseite">
+        {% set farbe = 'farbig' %}{% include "partials/logo.njk" %}
+        <span class="kopf__portal">Marketing&shy;portal</span>
+      </a>
+
+      <nav id="hauptnav" class="nav" aria-label="Hauptnavigation">
+        <ul class="nav__liste">
+          {%- for item in navigation %}
+          {%- set aktiv = page.url.startsWith(item.url) %}
+          <li class="nav__punkt">
+            <button class="nav__oben js-menue" type="button" aria-expanded="false"{% if aktiv %} data-aktiv{% endif %}>
+              {{ item.titel }} {{ icon("runter", 16) }}
+            </button>
+            <div class="mega">
+              <div class="mega__inner">
+                <div class="mega__intro">
+                  <p class="mega__titel">{{ item.titel }}</p>
+                  <p>{{ item.text }}</p>
+                  <a class="mega__alle" href="{{ item.url | url }}">Zur Übersicht {{ icon("pfeil", 16) }}</a>
+                </div>
+                <ul class="mega__links">
+                  {%- if item.quelle == "kampagnen" %}
+                    {%- for k in collections.kampagnen | aktuelleZuerst %}{% set st = k.data | status %}
+                    <li><a href="{{ ('/aktionen/' + k.fileSlug + '/') | url }}"><strong>{{ k.data.title }}</strong><span><span class="chip chip--{{ st.code }} chip--mini js-status" data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">{{ st.text }}</span></span></a></li>
+                    {%- endfor %}
+                  {%- elif item.quelle %}
+                    {%- for b in collections.bereiche | bereicheIn(item.quelle) %}
+                    <li><a href="{{ b | bereichUrl | url }}"><strong>{{ b.data.title }}</strong><span>{{ b.data.kurz }}</span></a></li>
+                    {%- endfor %}
+                  {%- else %}
+                    {%- for c in item.kinder %}
+                    <li><a href="{{ c.url | url }}"><strong>{{ c.titel }}</strong><span>{{ c.text }}</span></a></li>
+                    {%- endfor %}
+                  {%- endif %}
+                </ul>
+              </div>
+            </div>
+          </li>
+          {%- endfor %}
+        </ul>
+      </nav>
+
+      <div class="kopf__aktionen">
+        <button class="kopf__suche js-suche-auf" type="button" aria-label="Suche öffnen">{{ icon("suche", 20) }}<span>Suchen</span><kbd>/</kbd></button>
+        <a class="btn btn--sekundaer btn--klein kopf__kontakt" href="{{ '/kontakt/' | url }}">Kontakt</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="hauptnav"><span class="menu-toggle__icon" aria-hidden="true"></span><span class="sr-only">Menü</span></button>
+      </div>
+    </div>
+  </header>
+
+
+  <main id="inhalt">
+    {{ content | safe }}
+  </main>
+
+  <footer class="fuss">
+    <div class="container fuss__grid">
+      <div>
+        {% set farbe = 'weiss' %}{% include "partials/logo.njk" %}
+        <p class="fuss__adresse">{{ site.organisation }}<br>{{ site.strasse }}<br>{{ site.ort }}</p>
+      </div>
+      <div>
+        <p class="fuss__titel">Bereiche</p>
+        <ul class="fuss__links">
+          {%- for item in navigation %}<li><a href="{{ item.url | url }}">{{ item.titel }}</a></li>{% endfor %}
+        </ul>
+      </div>
+      <div>
+        <p class="fuss__titel">Kontakt</p>
+        <p>{{ site.telefon }}<br><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      </div>
+      <div>
+        <p class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__links"><li><a href="{{ site.impressum }}">Impressum</a></li><li><a href="{{ site.datenschutz }}">Datenschutz</a></li></ul>
+      </div>
+    </div>
+    <div class="container"><p class="pflichthinweis">{{ site.pflichthinweis }}</p></div>
+  </footer>
+
+  <div class="suche" id="suche" hidden>
+    <div class="suche__box" role="dialog" aria-modal="true" aria-label="Suche">
+      <div class="suche__feld">
+        {{ icon("suche", 22) }}
+        <input id="suche-eingabe" type="search" placeholder="Suchen: z. B. GAA, 1440×420, Plakat, Logo …" autocomplete="off" aria-controls="suche-treffer">
+        <button class="icon-btn js-suche-zu" type="button" aria-label="Suche schließen">{{ icon("x", 20) }}</button>
+      </div>
+      <p class="suche__tipps">Beliebt: <button type="button" class="js-tipp">GAA</button> <button type="button" class="js-tipp">Internet-Filiale</button> <button type="button" class="js-tipp">Plakat</button> <button type="button" class="js-tipp">Logo</button> <button type="button" class="js-tipp">Zuwendung</button></p>
+      <ul id="suche-treffer" class="suche__treffer" role="listbox"></ul>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="application/json" id="suchindex">{{ collections | suchindex(zielgruppen) | safe }}</script>
+  <script>window.SV_BASIS = "{{ '/' | url }}";</script>
+</body>
+</html>

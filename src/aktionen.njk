@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+title: Aktionen
+permalink: /aktionen/
+---
+{%- set krumen = [["Aktionen",""]] -%}{% include "partials/brotkrumen.njk" %}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">Aktionen</p>
+    <h1>Alle Aktionen</h1>
+    <p class="lead">Was läuft, was kommt: Jede Aktion mit Steckbrief und allen Formaten für Sparkassen, Volksbanken, Social Media und Print.</p>
+  </div>
+</section>
+<section class="band">
+  <div class="container aktionen-raster">
+    {%- for k in collections.kampagnen | aktuelleZuerst %}{% include "partials/aktionskarte.njk" %}{% endfor %}
+  </div>
+</section>

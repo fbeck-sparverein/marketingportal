@@ -1,0 +1,30 @@
+---
+layout: layouts/base.njk
+title: Online-Formate
+permalink: /formate/
+---
+{%- set krumen = [["Online-Formate",""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- from "partials/icons.njk" import icon -%}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">Online-Formate</p>
+    <h1>Banner &amp; Bilder für Ihre Kanäle</h1>
+    <p class="lead">Wählen Sie Ihr Institut – Sie sehen alle Formate aller Aktionen, sortiert nach Kanal.</p>
+  </div>
+</section>
+<section class="band">
+  <div class="container bereichs-raster bereichs-raster--gross">
+    {%- for z in zielgruppen %}{% if z.seite %}
+    {%- set liste = collections.formate | formateVon(null, z.schluessel) %}
+    {%- set bilder = collections.formate | vorschauBilder(collections.kampagnen | aktuelleZuerst, z.schluessel) %}
+    <a class="bkarte bkarte--gross bkarte--bild js-institut-karte" data-wert="{{ z.schluessel }}" href="{{ ('/formate/' + z.schluessel + '/') | url }}">
+      <span class="faecher faecher--{{ z.schluessel }}" aria-hidden="true">
+        {%- for b in bilder | reverse %}<img src="{{ b.src | url }}" alt="" loading="lazy">{% endfor %}
+      </span>
+      <strong>{{ z.ueberschrift }}</strong>
+      <span>{{ z.text }}</span>
+      <span class="chip chip--mini chip--laeuft">{{ liste | anzahlDateien }} Dateien</span>
+    </a>
+    {% endif %}{%- endfor %}
+  </div>
+</section>

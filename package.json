@@ -1,0 +1,22 @@
+{
+  "name": "sparverein-marketingportal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Marketingportal des Sparverein Saarland e.V. – statische Website (Eleventy) mit Redaktionsoberfläche (Decap CMS)",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "cms": "decap-server",
+    "dateien": "node scripts/dateien-uebernehmen.mjs"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-img": "^7.1.1",
+    "decap-server": "^3.1.0",
+    "image-size": "^1.2.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

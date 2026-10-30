@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+title: Kontakt
+permalink: /kontakt/
+---
+{%- set krumen = [["Kontakt",""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- from "partials/icons.njk" import icon -%}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">{{ site.abteilung }}</p>
+    <h1>Kontakt</h1>
+    <p class="lead">Fragen zu Aktionen, Formaten, Werbemitteln oder Bestellungen? Wir helfen Ihnen gerne weiter.</p>
+  </div>
+</section>
+<section class="band">
+  <div class="container drei-spalten">
+    <div class="karte"><span class="karte__icon">{{ icon("telefon", 24) }}</span><h2>Anrufen</h2><p class="gross">{{ site.telefon }}</p><p>Für Fragen zu Aktionen, Formaten und Bestellungen.</p></div>
+    <div class="karte"><span class="karte__icon">{{ icon("mail", 24) }}</span><h2>Schreiben</h2><p class="gross"><a href="mailto:{{ site.email }}">{{ site.email }}</a></p><p>Für Bestellungen, Ausleihe und individuelle Formate.</p></div>
+    <div class="karte"><span class="karte__icon">{{ icon("info", 24) }}</span><h2>{{ site.organisation }}</h2><p>{{ site.strasse }}<br>{{ site.ort }}</p>
+      <ul class="link-liste">{% for s in site.social %}<li><a href="{{ s.url }}">{{ s.name }}</a></li>{% endfor %}</ul></div>
+  </div>
+</section>

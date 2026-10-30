@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: formatseiten
+  size: 1
+  alias: z
+permalink: "/formate/{{ z.schluessel }}/"
+eleventyComputed:
+  title: "{{ z.ueberschrift }}"
+---
+{%- set krumen = [["Online-Formate","/formate/"],[z.titel,""]] -%}{% include "partials/brotkrumen.njk" %}
+{%- from "partials/icons.njk" import icon -%}
+<section class="seitenkopf">
+  <div class="container">
+    <p class="eyebrow">Online-Formate</p>
+    <h1>{{ z.ueberschrift }}</h1>
+    <p class="lead">{{ z.text }}</p>
+    <nav class="sprungmarken sprungmarken--kopf" aria-label="Aktionen">
+      {%- for k in collections.kampagnen | aktuelleZuerst %}{% set n = collections.formate | formateVon(k.fileSlug, z.schluessel) | anzahlDateien %}{% if n %}
+      {% set st = k.data | status %}<a href="#{{ k.fileSlug }}">{{ k.data.title }} <span class="chip chip--{{ st.code }} chip--mini js-status" data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">{{ st.text }}</span></a>
+      {% endif %}{%- endfor %}
+    </nav>
+  </div>
+</section>
+{%- for k in collections.kampagnen | aktuelleZuerst %}
+{%- set liste = collections.formate | formateVon(k.fileSlug, z.schluessel) %}
+{%- if liste | length %}
+<section class="band{% if loop.index is even %} band--grau{% endif %}" id="{{ k.fileSlug }}">
+  <div class="container">
+    <div class="abschnitt-kopf abschnitt-kopf--zeile">
+      <div><h2>{{ k.data.title }}</h2><p>{{ k.data.zeitraum }}</p></div>
+      <a class="mehr" href="{{ ('/aktionen/' + k.fileSlug + '/') | url }}">Zur Aktion {{ icon("pfeil", 16) }}</a>
+    </div>
+    {%- for f in liste %}
+    <article class="kanal" id="{{ f.fileSlug }}">
+      <header class="kanal__kopf"><div><h3>{{ f.data.title }}</h3>{% if f.data.beschreibung %}<p>{{ f.data.beschreibung }}</p>{% endif %}</div>
+      {% if f.data.ordner %}<a class="btn btn--rand btn--klein" href="{{ f.data.ordner }}">Ordner öffnen</a>{% endif %}</header>
+      {% set dateien = f.data.dateien %}{% include "partials/dateien.njk" %}
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}
+{%- endfor %}
