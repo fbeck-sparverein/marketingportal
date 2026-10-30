@@ -34,7 +34,7 @@ eleventyComputed:
     {%- for f in liste %}
     <article class="kanal" id="{{ f.fileSlug }}">
       <header class="kanal__kopf"><div><h3>{{ f.data.title }}</h3>{% if f.data.beschreibung %}<p>{{ f.data.beschreibung }}</p>{% endif %}</div>
-      {% if f.data.ordner %}<a class="btn btn--rand btn--klein" href="{{ f.data.ordner }}">Ordner öffnen</a>{% endif %}</header>
+      </header>
       {% set dateien = f.data.dateien %}{% include "partials/dateien.njk" %}
     </article>
     {%- endfor %}

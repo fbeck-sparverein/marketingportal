@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: sparkassen
 reihenfolge: 3
 beschreibung: Geldautomat, Kontoauszugsdrucker, SB-Terminal, POS und Unifit.
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FSparkassen
 dateien:
   - bezeichnung: GAA klein
     masse: 640×335

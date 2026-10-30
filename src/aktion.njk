@@ -8,14 +8,15 @@ permalink: "/aktionen/{{ k.fileSlug }}/"
 eleventyComputed:
   title: "{{ k.data.title }}"
 ---
-{%- set krumen = [["Aktionen","/aktionen/"],[k.data.title,""]] -%}{% include "partials/brotkrumen.njk" %}
 {%- from "partials/icons.njk" import icon -%}
 {%- set st = k.data | status -%}
 {%- set alle = collections.formate | formateVon(k.fileSlug) -%}
+{%- set kopfbild = k.data.kartenbild or k.data.bild -%}
 
-<section class="aktion-kopf aktion-kopf--bild{% if not k.data.bild %} aktion-kopf--ohne-bild{% endif %}" data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">
+<section class="aktion-kopf aktion-kopf--bild{% if not kopfbild %} aktion-kopf--ohne-bild{% endif %}" data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">
   <div class="container aktion-kopf__grid">
     <div>
+      <a class="aktion-kopf__zurueck" href="{{ '/aktionen/' | url }}">{{ icon("pfeil", 16) }} Alle Aktionen</a>
       <p class="aktion-kopf__meta"><span class="chip chip--{{ st.code }} js-status">{{ st.text }}</span> <span>{{ k.data.typ }}</span></p>
       <h1>{{ k.data.title }}{% if k.data.untertitel %}<span class="untertitel">{{ k.data.untertitel }}</span>{% endif %}</h1>
       <p class="lead">{{ k.data.teaser }}</p>
@@ -24,19 +25,22 @@ eleventyComputed:
         {% if k.data.steckbrief %}<a class="btn btn--hell" href="{{ k.data.steckbrief.link }}">{{ icon("dokument", 18) }} {{ k.data.steckbrief.text }} <small>PDF{% if k.data.steckbrief.groesse %}, {{ k.data.steckbrief.groesse }}{% endif %}</small></a>{% endif %}
       </div>
     </div>
-    {%- if k.data.bild %}<figure class="kopfbild"><img src="{{ k.data.bild | verkleinert(1200) | url }}" alt="Kampagnenmotiv {{ k.data.title }}"></figure>{% endif %}
+    {%- if kopfbild %}<figure class="kopfbild"><img src="{{ kopfbild | verkleinert(1200) | url }}" alt="Kampagnenmotiv {{ k.data.title }}"></figure>{% endif %}
   </div>
 </section>
-<div class="container">
-  <div class="faktenleiste">
-    <div><span class="faktenleiste__titel">Zeitraum</span><strong>{{ k.data.zeitraum }}</strong>{% if k.data.verlosung %}<span class="faktenleiste__klein">Verlosung am {{ k.data.verlosung }}</span>{% endif %}</div>
-    <div class="faktenleiste__gewinne"><span class="faktenleiste__titel">Highlights</span><ul>{% for h in k.data.highlights %}<li>{{ h }}</li>{% endfor %}</ul></div>
-  </div>
-</div>
-
 <section class="band band--prosa">
-  <div class="container">
+  <div class="container aktion-text">
     <div class="prosa">{{ k.templateContent | safe }}</div>
+    <aside class="eckdaten" aria-label="Auf einen Blick">
+      <h2 class="eckdaten__titel">Auf einen Blick</h2>
+      <dl>
+        <div><dt>{{ icon("kalender", 18) }} Zeitraum</dt><dd>{{ k.data.zeitraum }}</dd></div>
+        {%- if k.data.verlosung %}<div><dt>{{ icon("uhr", 18) }} Verlosung</dt><dd>{{ k.data.verlosung }}</dd></div>{% endif %}
+        {%- if k.data.highlights and k.data.highlights.length %}
+        <div><dt>{{ icon("stern", 18) }} Highlights</dt><dd><ul>{% for h in k.data.highlights %}<li>{{ h }}</li>{% endfor %}</ul></dd></div>
+        {%- endif %}
+      </dl>
+    </aside>
   </div>
   {%- if k.data.beispiele and k.data.beispiele.length %}
   <div class="container beispiele">
@@ -85,7 +89,6 @@ eleventyComputed:
       <article class="kanal" id="{{ f.fileSlug }}">
         <header class="kanal__kopf">
           <div><h3>{{ f.data.title }}</h3>{% if f.data.beschreibung %}<p>{{ f.data.beschreibung }}</p>{% endif %}</div>
-          {% if f.data.ordner %}<a class="btn btn--rand btn--klein" href="{{ f.data.ordner }}">Ordner öffnen</a>{% endif %}
         </header>
         {% set dateien = f.data.dateien %}{% include "partials/dateien.njk" %}
       </article>
@@ -100,7 +103,7 @@ eleventyComputed:
   <div class="container">
     <div class="abschnitt-kopf"><h2>Weitere Aktionen</h2></div>
     <div class="aktionen-raster aktionen-raster--klein">
-      {%- set dieseAktion = k.fileSlug %}{%- for k2 in collections.kampagnen | aktuelleZuerst %}{% if k2.fileSlug != dieseAktion %}{% set k = k2 %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endfor %}
+      {%- set dieseAktion = k.fileSlug %}{%- asyncEach k2 in collections.kampagnen | aktuelleZuerst %}{% ifAsync k2.fileSlug != dieseAktion %}{% set k = k2 %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endeach %}
     </div>
   </div>
 </section>

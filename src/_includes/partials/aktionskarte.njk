@@ -1,8 +1,12 @@
 {#- Karte für eine Aktion – überall gleich aufgebaut. Erwartet: k (Kampagne) -#}
 {%- from "partials/icons.njk" import icon -%}
 {%- set st = k.data | status -%}
-<a class="akarte akarte--{{ st.code }}" href="{{ ('/aktionen/' + k.fileSlug + '/') | url }}"
+{%- set bild = k.data.kartenbild or k.data.bild -%}
+<a class="akarte akarte--{{ st.code }}{% if bild %} akarte--bild{% endif %}" href="{{ ('/aktionen/' + k.fileSlug + '/') | url }}"
    data-start="{{ k.data.start }}" data-ende="{{ k.data.ende }}" data-dauerhaft="{{ 'ja' if k.data.dauerhaft }}">
+  {%- if bild %}
+  <div class="akarte__bild"><img src="{{ bild | verkleinert(800) | url }}" alt="" loading="lazy"></div>
+  {%- endif %}
   <div class="akarte__kopf">
     <span class="chip chip--{{ st.code }} js-status">{{ st.text }}</span>
     <span class="akarte__typ">{{ k.data.typ }}</span>

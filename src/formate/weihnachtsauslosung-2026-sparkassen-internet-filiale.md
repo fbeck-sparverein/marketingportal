@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: sparkassen
 reihenfolge: 1
 beschreibung: Header-Bilder für die Internet-Filiale (IF6).
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FSparkassen
 dateien:
   - bezeichnung: Bild-Header 1
     masse: 2400×1050

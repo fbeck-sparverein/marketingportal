@@ -41,7 +41,7 @@ permalink: /termine-gewinne/
       <p class="klein">Gewinnchance auf einen der Hauptgewinne: {{ gewinne.gewinnchance }}. {{ gewinne.hinweis }}</p>
     </div>
     <div class="stapel">
-      {%- for k in collections.kampagnen | aktuelleZuerst %}{% if not k.data.dauerhaft %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endfor %}
+      {%- asyncEach k in collections.kampagnen | aktuelleZuerst %}{% ifAsync not k.data.dauerhaft %}{% include "partials/aktionskarte.njk" %}{% endif %}{% endeach %}
     </div>
   </div>
 </section>

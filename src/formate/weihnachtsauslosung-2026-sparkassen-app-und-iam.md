@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: sparkassen
 reihenfolge: 2
 beschreibung: Banner für die Sparkassen-App und In-App-Messaging.
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FSparkassen%2FApp
 dateien:
   - bezeichnung: App-Banner groß, Motiv 1
     masse: 1440×420

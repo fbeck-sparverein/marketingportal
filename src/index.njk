@@ -19,9 +19,9 @@ bodyClass: start
 
     <h2 class="hero__zwischen">Was läuft gerade?</h2>
     <div class="aktionen-raster">
-      {%- for k in aktionen %}
+      {%- asyncEach k in aktionen %}
         {% include "partials/aktionskarte.njk" %}
-      {%- endfor %}
+      {%- endeach %}
     </div>
   </div>
 </section>

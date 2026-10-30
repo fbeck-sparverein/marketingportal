@@ -1,19 +1,21 @@
 ---
 title: Geschenk-Lose
+untertitel: Ein Los zum Verschenken
 typ: Produkt
 dauerhaft: true
 zeitraum: Ganzjährig verfügbar
 teaser: GewinnSparer können Lose verschenken – als Monats- oder Jahres-Los, mit Motiven für jeden Anlass.
 highlights:
-  - Monats-Los (einmalige Teilnahme) oder Jahres-Los (12 Monate)
-  - Motive für Weihnachten, Ostern, Geburtstag u. v. m.
-  - Kauf ausschließlich über sparverein-geschenklos.de
+  - Als Monats- oder Jahres-Los
+  - Motive für jeden Anlass
+  - Nur über sparverein-geschenklos.de
 steckbrief:
   text: Produktinformation Geschenk-Lose
   link: https://marketing.sparverein.de/media/download-659bb3e7b3faf
   groesse: 784 KB
 reihenfolge: 3
 bild: /assets/uploads/kampagnen/geschenk-lose/titelbild_geschenk-lose_1920x1080.jpg
+kartenbild: /assets/uploads/formate/geschenk-lose-sparkassen-internet-filiale/geschenk-lose_header-motiv-2-2400x1050.jpg
 ---
 Ab sofort können GewinnSparer auch GewinnSpar-Lose verschenken. Der Kauf ist ausschließlich über die Website www.sparverein-geschenklos.de möglich.
 

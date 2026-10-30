@@ -13,6 +13,6 @@ permalink: /aktionen/
 </section>
 <section class="band">
   <div class="container aktionen-raster">
-    {%- for k in collections.kampagnen | aktuelleZuerst %}{% include "partials/aktionskarte.njk" %}{% endfor %}
+    {%- asyncEach k in collections.kampagnen | aktuelleZuerst %}{% include "partials/aktionskarte.njk" %}{% endeach %}
   </div>
 </section>

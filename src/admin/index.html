@@ -36,8 +36,7 @@
               h("div", {},
                 h("h2", {}, get("title") || "Kanal"),
                 h("p", {}, get("beschreibung") || "")
-              ),
-              get("ordner") ? h("a", { className: "btn btn--rand", href: get("ordner") }, "Alle als Ordner öffnen") : null
+              )
             ),
             h("ul", { className: "dateien-raster" },
               dateien.map((d, i) => {

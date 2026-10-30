@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: volksbanken
 reihenfolge: 1
 beschreibung: Motive für die Online-Filiale – Open Graph, Opener und 3:2, jeweils in zwei Varianten.
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FVolksbanken
 dateien:
   - bezeichnung: Open Graph 1,91:1 mit Logo, Motiv 1
     masse: 1919×1010

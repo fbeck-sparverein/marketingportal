@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: volksbanken
 reihenfolge: 2
 beschreibung: Motive für Geldautomaten und Bildschirme.
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FVolksbanken
 dateien:
   - bezeichnung: GAA & Kontoauszugsdrucker
     masse: 1280×720

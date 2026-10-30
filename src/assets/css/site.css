@@ -131,11 +131,17 @@ kbd { font: 700 12px/1 "PT Sans", sans-serif; border: 1px solid currentColor; bo
 .aktionen-raster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; align-items: stretch; }
 /* Karten teilen sich ein Zeilenraster: Status, Titel, Zeitraum, Highlights und Link stehen in allen Karten auf gleicher Höhe */
 .aktionen-raster > .akarte { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 10px; margin-bottom: 20px; }
+.aktionen-raster > .akarte--bild { grid-row: span 6; }
 .aktionen-raster--klein { grid-template-columns: repeat(3, 1fr); }
-.akarte { position: relative; display: flex; flex-direction: column; gap: 10px; background: #fff; border-radius: var(--radius); padding: 24px; text-decoration: none; color: var(--grau); box-shadow: var(--schatten); border: 1px solid var(--blau-10); transition: transform .2s, box-shadow .2s; overflow: hidden; }
+.akarte { --pad: 24px; position: relative; display: flex; flex-direction: column; gap: 10px; background: #fff; border-radius: var(--radius); padding: var(--pad); text-decoration: none; color: var(--grau); box-shadow: var(--schatten); border: 1px solid var(--blau-10); transition: transform .2s, box-shadow .2s; overflow: hidden; }
 .akarte:hover { transform: translateY(-3px); box-shadow: var(--schatten-md); color: var(--grau); }
 .akarte::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--blau-20); }
 .akarte--laeuft::before { background: #2ea865; } .akarte--bald::before { background: var(--orange); } .akarte--beendet { opacity: .7; }
+.akarte--bild::before { content: none; }
+/* Kampagnenmotiv randlos oben, im Originalformat 1453×640 (nichts abgeschnitten) */
+.akarte__bild { margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 6px; aspect-ratio: 1453 / 640; background: var(--blau-10); overflow: hidden; border-bottom: 1px solid var(--blau-10); }
+.akarte__bild img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+.akarte:hover .akarte__bild img { transform: scale(1.03); }
 .akarte__kopf { display: flex; justify-content: space-between; align-items: center; gap: 6px 12px; flex-wrap: wrap; }
 .akarte__typ { font-size: 13px; margin-left: auto; text-transform: uppercase; letter-spacing: .1em; color: var(--grau-60); font-weight: 700; }
 .akarte__titel { font-size: 25px; margin: 4px 0 0; }
@@ -144,9 +150,9 @@ kbd { font: 700 12px/1 "PT Sans", sans-serif; border: 1px solid currentColor; bo
 .akarte__zeit { display: flex; align-items: flex-start; gap: 8px; font-size: 15px; line-height: 1.4; color: var(--blau-80); margin: 0; }
 .akarte__zeit .ic { margin-top: 2px; }
 .akarte__teaser { margin: 0; flex: 1; }
-.akarte__highlights { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 10px; align-content: start; flex: 1; line-height: 1.4; }
-.akarte__highlights li { padding-left: 28px; position: relative; color: var(--blau); font-weight: 700; }
-.akarte__highlights li::before { content: ""; position: absolute; left: 0; top: 2px; width: 19px; height: 19px; background: url("../img/kleeblatt.svg") center / contain no-repeat; }
+.akarte__highlights { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 8px; align-content: start; flex: 1; line-height: 1.4; font-size: 16px; }
+.akarte__highlights li { padding-left: 24px; position: relative; color: var(--blau-80); }
+.akarte__highlights li::before { content: ""; position: absolute; left: 0; top: 4px; width: 15px; height: 15px; background: url("../img/kleeblatt.svg") center / contain no-repeat; }
 .akarte__cta { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--blau); margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--blau-10); }
 .akarte:hover .akarte__cta .ic { transform: translateX(4px); }
 .akarte__cta .ic { transition: transform .2s; color: var(--orange-hover); }
@@ -267,7 +273,7 @@ html[data-institut="sparkassen"] .js-institut-karte[data-wert="sparkassen"], htm
 .aktion-kopf h1 { color: #fff; }
 .aktion-kopf .untertitel { display: block; font-size: .5em; color: var(--orange); margin-top: 6px; }
 .aktion-kopf__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
-.aktion-kopf__meta { display: flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; font-weight: 700; }
+.aktion-kopf__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; font-weight: 700; }
 .aktion-kopf__knoepfe { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .fakten { background: #fff; color: var(--grau); border-radius: var(--radius); padding: 24px 26px; box-shadow: 0 16px 40px rgba(0,0,0,.25); border-top: 6px solid var(--orange); }
 .fakten__titel { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--orange-dunkel); margin-bottom: 10px; }
@@ -279,8 +285,10 @@ html[data-institut="sparkassen"] .js-institut-karte[data-wert="sparkassen"], htm
 .fakten__liste li::before { content: ""; position: absolute; left: 0; top: 2px; width: 19px; height: 19px; background: url("../img/kleeblatt.svg") center / contain no-repeat; }
 
 /* Reiter */
-.reiter { display: flex; gap: 6px; border-bottom: 2px solid var(--blau-10); margin-bottom: 24px; overflow-x: auto; }
-.reiter__knopf { display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; border-bottom: 3px solid transparent; margin-bottom: -2px; padding: 12px 18px; font-weight: 700; font-size: 17px; color: var(--blau-60); cursor: pointer; white-space: nowrap; }
+/* Grundlinie als innerer Schatten statt Rahmen: so ragt nichts über die Leiste hinaus und es entsteht keine Scrollleiste */
+.reiter { display: flex; gap: 6px; box-shadow: inset 0 -2px 0 var(--blau-10); margin-bottom: 24px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+.reiter::-webkit-scrollbar { display: none; }
+.reiter__knopf { display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; border-bottom: 3px solid transparent; padding: 12px 18px; font-weight: 700; font-size: 17px; color: var(--blau-60); cursor: pointer; white-space: nowrap; }
 .reiter__knopf:hover { color: var(--blau); }
 .reiter__knopf[aria-selected="true"] { color: var(--blau); border-bottom-color: var(--orange); }
 .zahl { background: var(--blau-10); color: var(--blau); font-size: 13px; padding: 1px 8px; border-radius: 999px; }
@@ -415,7 +423,7 @@ html[data-institut="sparkassen"] .js-institut-karte[data-wert="sparkassen"], htm
   .dkarte__meta { font-size: 13px; flex-direction: column; }
   .dkarte__meta > span + span::before { content: none; }
   .akarte__typ { display: none; }
-  .akarte { padding: 22px 20px; }
+  .akarte { --pad: 20px; }
   .institut-wahl__label { display: none; }
   .termin { grid-template-columns: 64px 1fr; }
   .termin__in { grid-column: 2; }
@@ -427,21 +435,28 @@ html[data-institut="sparkassen"] .js-institut-karte[data-wert="sparkassen"], htm
 .aktion-kopf--bild { padding-bottom: 96px; }
 .aktion-kopf--bild .aktion-kopf__grid { grid-template-columns: 1fr 1.05fr; }
 .kopfbild { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.35); transform: rotate(1.2deg); border: 4px solid #fff; }
-.kopfbild img { width: 100%; height: auto; display: block; }
-.faktenleiste { position: relative; z-index: 2; margin-top: -56px; display: grid; grid-template-columns: 1fr 2fr; gap: 0; background: #fff; border-radius: var(--radius); box-shadow: var(--schatten-md); border-top: 5px solid var(--orange); }
-.faktenleiste > div { padding: 22px 28px; }
-.faktenleiste > div + div { border-left: 1px solid var(--blau-10); }
-.faktenleiste__titel { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--orange-dunkel); margin-bottom: 8px; }
-.faktenleiste strong { display: block; color: var(--blau); font-size: 18px; line-height: 1.35; }
-.faktenleiste__klein { display: block; margin-top: 6px; font-size: 15px; }
-.faktenleiste ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.faktenleiste li { padding-left: 28px; position: relative; color: var(--blau); font-weight: 700; line-height: 1.35; }
-.faktenleiste li::before { content: ""; position: absolute; left: 0; top: 1px; width: 19px; height: 19px; background: url("../img/kleeblatt.svg") center / contain no-repeat; }
+.kopfbild img { width: 100%; aspect-ratio: 1453 / 640; object-fit: cover; display: block; }
+.aktion-kopf__zurueck { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 15px; font-weight: 700; color: #b9c8d6; text-decoration: none; }
+.aktion-kopf__zurueck .ic { transform: rotate(180deg); transition: transform .2s; color: var(--orange); }
+.aktion-kopf__zurueck:hover { color: #fff; }
+.aktion-kopf__zurueck:hover .ic { transform: rotate(180deg) translateX(3px); }
+/* Beschreibung links, „Auf einen Blick“ rechts – der Kasten ragt in den blauen Kopf hinein */
+.aktion-text { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 64px; align-items: start; }
+.eckdaten { position: relative; z-index: 2; margin-top: -120px; background: #fff; border-radius: var(--radius); box-shadow: var(--schatten-md); border-top: 5px solid var(--orange); padding: 28px 32px 30px; }
+.eckdaten__titel { font-size: 20px; margin: 0 0 18px; }
+.eckdaten dl { margin: 0; display: grid; gap: 0; }
+.eckdaten dl > div { padding: 16px 0; border-top: 1px solid var(--blau-10); }
+.eckdaten dl > div:last-child { padding-bottom: 0; }
+.eckdaten dt { display: flex; align-items: center; gap: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--orange-dunkel); margin-bottom: 8px; }
+.eckdaten dt .ic { color: var(--orange); }
+.eckdaten dd { margin: 0; color: var(--blau); font-size: 17px; line-height: 1.45; }
+.eckdaten ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.eckdaten li { padding-left: 26px; position: relative; }
+.eckdaten li::before { content: ""; position: absolute; left: 0; top: 3px; width: 17px; height: 17px; background: url("../img/kleeblatt.svg") center / contain no-repeat; }
 .aktion-kopf--ohne-bild .aktion-kopf__grid { grid-template-columns: 1fr; }
 @media (max-width: 1080px) {
   .aktion-kopf--bild .aktion-kopf__grid { grid-template-columns: 1fr; gap: 32px; }
-  .faktenleiste { grid-template-columns: 1fr; }
-  .faktenleiste > div + div { border-left: 0; border-top: 1px solid var(--blau-10); }
-  .faktenleiste ul { grid-template-columns: 1fr; gap: 10px; }
+  .aktion-text { grid-template-columns: 1fr; gap: 32px; }
+  .eckdaten { order: -1; }
 }
-@media (max-width: 600px) { .faktenleiste > div { padding: 18px 20px; } .kopfbild { transform: none; } }
+@media (max-width: 600px) { .eckdaten { padding: 22px 20px 24px; } .kopfbild { transform: none; } }

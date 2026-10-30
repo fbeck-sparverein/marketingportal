@@ -106,7 +106,9 @@
         <ul class="fuss__links"><li><a href="{{ site.impressum }}">Impressum</a></li><li><a href="{{ site.datenschutz }}">Datenschutz</a></li></ul>
       </div>
     </div>
+    {%- if site.pflichthinweis %}
     <div class="container"><p class="pflichthinweis">{{ site.pflichthinweis }}</p></div>
+    {%- endif %}
   </footer>
 
   <div class="suche" id="suche" hidden>

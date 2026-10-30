@@ -4,7 +4,6 @@ kampagne: weihnachtsauslosung-2026
 zielgruppe: social
 reihenfolge: 1
 beschreibung: Posts im Format 1080×1350 für Instagram und Facebook – je drei Motive mit und ohne Logo.
-ordner: https://cloud.sparverein.de/s/fyT6dyomBA3JYF9?path=%2FSparverein
 dateien:
   - bezeichnung: Instagram/Facebook mit Logo, Motiv 1
     masse: 1080×1350
