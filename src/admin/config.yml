@@ -70,55 +70,147 @@ collections:
           - { label: Beschriftung, name: beschriftung, widget: string, required: false, hint: "z. B. „Internet-Filiale“ oder „Geldautomat“" }
       - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 10 }
 
-  # ───────────────────────────── Formate ─────────────────────────────
-  - name: formate
+  # ───────────────────────────── Formate (je Zielgruppe ein Menüpunkt) ─────────────────────────────
+  # Alle vier lesen denselben Ordner; ein Eintrag = eine Aktion für eine Zielgruppe, mit Kanälen als Liste.
+  - name: formate_sparkassen
+    label: Formate Sparkassen
+    label_singular: Formate einer Aktion
+    description: Jeder Eintrag sammelt alle Formate einer Aktion für diese Zielgruppe, gegliedert nach Kanälen. Für eine neue Aktion am einfachsten den Eintrag der Vorgänger-Aktion öffnen und „Duplizieren“ wählen.
+    folder: src/formate
+    filter: { field: zielgruppe, value: sparkassen }
     media_folder: /src/assets/uploads/formate
     public_folder: /assets/uploads/formate
-    label: Online-Formate
-    label_singular: Formatpaket
-    description: >-
-      Ein Formatpaket ist ein Kanal einer Aktion (z. B. „Internet-Filiale“ für Sparkassen) mit allen Dateien.
-      Es erscheint automatisch auf der Aktionsseite und unter „Online-Formate“.
-    folder: src/formate
     create: true
-    slug: "{{kampagne}}-{{zielgruppe}}-{{slug}}"
-    summary: "{{title}} · {{zielgruppe}} · {{kampagne}}"
-    sortable_fields: [title, kampagne, zielgruppe]
-    view_filters:
-      - { label: Sparkassen, field: zielgruppe, pattern: sparkassen }
-      - { label: Volksbanken, field: zielgruppe, pattern: volksbanken }
-      - { label: Social Media, field: zielgruppe, pattern: social }
-      - { label: Print, field: zielgruppe, pattern: print }
-    view_groups:
-      - { label: Aktion, field: kampagne }
+    identifier_field: kampagne
+    slug: "{{kampagne}}-sparkassen"
+    summary: "{{kampagne}}"
     fields:
-      - { label: Kanal, name: title, widget: string, hint: "z. B. Internet-Filiale, App & IAM, GAA & Bildschirme" }
-      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title] }
-      - label: Für
-        name: zielgruppe
-        widget: select
-        options:
-          - { label: Sparkassen, value: sparkassen }
-          - { label: Volksbanken, value: volksbanken }
-          - { label: Social Media, value: social }
-          - { label: Print, value: print }
-      - { label: Kurzbeschreibung, name: beschreibung, widget: text, required: false }
-      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 10, hint: "Kleinere Zahl = weiter oben" }
-      - label: Dateien
-        name: dateien
+      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title], hint: "Je Aktion gibt es hier genau einen Eintrag." }
+      - { label: Zielgruppe, name: zielgruppe, widget: hidden, default: sparkassen }
+      - label: Kanäle
+        name: kanaele
         widget: list
-        label_singular: Datei
-        summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+        label_singular: Kanal
+        summary: "{{fields.kanal}}"
         collapsed: true
+        hint: "Reihenfolge per Ziehen ändern – so erscheinen die Kanäle auf der Website."
         fields:
-          - { label: Bezeichnung, name: bezeichnung, widget: string, hint: "Sprechender Name, z. B. „Bild-Header 1“ oder „Plakat Weihnachtsauslosung“" }
-          - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
-          - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
-          - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
-          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, WEBP, SVG, BMP, PCX, PDF, MP4, MOV, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
-          - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
-          - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
-          - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
+          - { label: Kanal, name: kanal, widget: select, options: ["Internet-Filiale", "App", "GAA, KAD & Filialbildschirme", "Sonstiges"] }
+          - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - label: Dateien
+            name: dateien
+            widget: list
+            label_singular: Datei
+            summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+            collapsed: true
+            fields: &datei_felder
+              - { label: Bezeichnung, name: bezeichnung, widget: string, hint: "Sprechender Name, z. B. „Bild-Header 1“ oder „Plakat Weihnachtsauslosung“" }
+              - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
+              - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
+              - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
+              - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, WEBP, SVG, BMP, PCX, PDF, MP4, MOV, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
+              - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
+              - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
+              - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
+
+  - name: formate_volksbanken
+    label: Formate Volksbanken
+    label_singular: Formate einer Aktion
+    description: Jeder Eintrag sammelt alle Formate einer Aktion für diese Zielgruppe, gegliedert nach Kanälen. Für eine neue Aktion am einfachsten den Eintrag der Vorgänger-Aktion öffnen und „Duplizieren“ wählen.
+    folder: src/formate
+    filter: { field: zielgruppe, value: volksbanken }
+    media_folder: /src/assets/uploads/formate
+    public_folder: /assets/uploads/formate
+    create: true
+    identifier_field: kampagne
+    slug: "{{kampagne}}-volksbanken"
+    summary: "{{kampagne}}"
+    fields:
+      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title], hint: "Je Aktion gibt es hier genau einen Eintrag." }
+      - { label: Zielgruppe, name: zielgruppe, widget: hidden, default: volksbanken }
+      - label: Kanäle
+        name: kanaele
+        widget: list
+        label_singular: Kanal
+        summary: "{{fields.kanal}}"
+        collapsed: true
+        hint: "Reihenfolge per Ziehen ändern – so erscheinen die Kanäle auf der Website."
+        fields:
+          - { label: Kanal, name: kanal, widget: select, options: ["Online-Filiale", "GAA & Bildschirme", "Sonstiges"] }
+          - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - label: Dateien
+            name: dateien
+            widget: list
+            label_singular: Datei
+            summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+            collapsed: true
+            fields: *datei_felder
+
+  - name: formate_social
+    label: Formate Social Media
+    label_singular: Formate einer Aktion
+    description: Jeder Eintrag sammelt alle Formate einer Aktion für diese Zielgruppe, gegliedert nach Kanälen. Für eine neue Aktion am einfachsten den Eintrag der Vorgänger-Aktion öffnen und „Duplizieren“ wählen.
+    folder: src/formate
+    filter: { field: zielgruppe, value: social }
+    media_folder: /src/assets/uploads/formate
+    public_folder: /assets/uploads/formate
+    create: true
+    identifier_field: kampagne
+    slug: "{{kampagne}}-social"
+    summary: "{{kampagne}}"
+    fields:
+      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title], hint: "Je Aktion gibt es hier genau einen Eintrag." }
+      - { label: Zielgruppe, name: zielgruppe, widget: hidden, default: social }
+      - label: Kanäle
+        name: kanaele
+        widget: list
+        label_singular: Kanal
+        summary: "{{fields.kanal}}"
+        collapsed: true
+        hint: "Reihenfolge per Ziehen ändern – so erscheinen die Kanäle auf der Website."
+        fields:
+          - { label: Kanal, name: kanal, widget: select, options: ["Social-Media-Posts", "Sonstiges"] }
+          - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - label: Dateien
+            name: dateien
+            widget: list
+            label_singular: Datei
+            summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+            collapsed: true
+            fields: *datei_felder
+
+  - name: formate_print
+    label: Formate Print
+    label_singular: Formate einer Aktion
+    description: Jeder Eintrag sammelt alle Formate einer Aktion für diese Zielgruppe, gegliedert nach Kanälen. Für eine neue Aktion am einfachsten den Eintrag der Vorgänger-Aktion öffnen und „Duplizieren“ wählen.
+    folder: src/formate
+    filter: { field: zielgruppe, value: print }
+    media_folder: /src/assets/uploads/formate
+    public_folder: /assets/uploads/formate
+    create: true
+    identifier_field: kampagne
+    slug: "{{kampagne}}-print"
+    summary: "{{kampagne}}"
+    fields:
+      - { label: Aktion, name: kampagne, widget: relation, collection: kampagnen, search_fields: [title], value_field: "{{slug}}", display_fields: [title], hint: "Je Aktion gibt es hier genau einen Eintrag." }
+      - { label: Zielgruppe, name: zielgruppe, widget: hidden, default: print }
+      - label: Kanäle
+        name: kanaele
+        widget: list
+        label_singular: Kanal
+        summary: "{{fields.kanal}}"
+        collapsed: true
+        hint: "Reihenfolge per Ziehen ändern – so erscheinen die Kanäle auf der Website."
+        fields:
+          - { label: Kanal, name: kanal, widget: select, options: ["Flyer & Plakat", "Sonstiges"] }
+          - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - label: Dateien
+            name: dateien
+            widget: list
+            label_singular: Datei
+            summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
+            collapsed: true
+            fields: *datei_felder
 
   # ───────────────────────────── Werbemittel, Vertrieb, Service ─────────────────────────────
   - name: bereiche

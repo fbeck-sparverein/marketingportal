@@ -24,47 +24,51 @@
       return { width: Math.round(w * s) + "px", height: Math.round(hh * s) + "px" };
     }
 
-    // Vorschau: Formatpaket (so sieht es auf der Website aus)
+    // Vorschau: Formate einer Aktion – je Kanal ein Block (so sieht es auf der Website aus)
     const FormatVorschau = createClass({
       render() {
         const e = this.props.entry;
-        const get = (k) => e.getIn(["data", k]);
-        const dateien = (get("dateien") || []).toJS ? get("dateien").toJS() : (get("dateien") || []);
+        const roh = e.getIn(["data", "kanaele"]);
+        const kanaele = roh && roh.toJS ? roh.toJS() : (roh || []);
         return h("div", { style: { padding: "32px 24px" } },
-          h("article", {},
-            h("header", { style: { marginBottom: "20px" } },
-              h("div", {},
-                h("h2", {}, get("title") || "Kanal"),
-                h("p", {}, get("beschreibung") || "")
-              )
-            ),
-            h("ul", { className: "dateien-raster" },
-              dateien.map((d, i) => {
-                const endung = String(d.datei || "").split(".").pop().toUpperCase();
-                const typ = d.datei ? (endung === "JPEG" ? "JPG" : endung) : d.typ;
-                const istBild = ["JPG", "PNG", "GIF", "SVG", "WEBP"].includes(typ);
-                const quelle = d.vorschau || (istBild ? d.datei : null);
-                const bild = quelle ? this.props.getAsset(quelle) : null;
-                return h("li", { className: "dkarte", key: i },
-                  h("div", { className: "dkarte__vorschau" },
-                    bild ? h("img", { src: bild.toString(), alt: "" }) :
-                      h("span", { className: "rahmen", style: rahmen(d.masse) }, h("span", {}, d.masse || typ || "?")),
-                    typ ? h("span", { className: "dkarte__typ" }, typ) : null
-                  ),
-                  h("div", { className: "dkarte__info" },
-                    h("span", { className: "dkarte__name" }, d.bezeichnung || "Neue Datei"),
-                    h("span", { className: "dkarte__meta" }, d.datei ? "Maße und Größe werden beim Veröffentlichen ermittelt"
-                      : [d.masse && d.masse + " px", d.typ, d.groesse].filter(Boolean).join(" · ") || "Noch keine Datei hochgeladen")
-                  ),
-                  h("div", { className: "dkarte__aktionen" }, h("span", { className: "btn btn--download" }, "Download"))
-                );
-              })
+          kanaele.length ? kanaele.map((k, j) => this.kanal(k, j)) : h("p", {}, "Noch keine Kanäle angelegt.")
+        );
+      },
+      kanal(k, j) {
+        const dateien = k.dateien || [];
+        return h("article", { className: "kanal", key: j },
+          h("header", { className: "kanal__kopf" },
+            h("div", {},
+              h("h3", {}, k.kanal || "Kanal"),
+              k.beschreibung ? h("p", {}, k.beschreibung) : null
             )
+          ),
+          h("ul", { className: "dateien-raster" },
+            dateien.map((d, i) => {
+              const endung = String(d.datei || "").split(".").pop().toUpperCase();
+              const typ = d.datei ? (endung === "JPEG" ? "JPG" : endung) : d.typ;
+              const istBild = ["JPG", "PNG", "GIF", "SVG", "WEBP"].includes(typ);
+              const quelle = d.vorschau || (istBild ? d.datei : null);
+              const bild = quelle ? this.props.getAsset(quelle) : null;
+              return h("li", { className: "dkarte", key: i },
+                h("div", { className: "dkarte__vorschau" },
+                  bild ? h("img", { src: bild.toString(), alt: "" }) :
+                    h("span", { className: "rahmen", style: rahmen(d.masse) }, h("span", {}, d.masse || typ || "?")),
+                  typ ? h("span", { className: "dkarte__typ" }, typ) : null
+                ),
+                h("div", { className: "dkarte__info" },
+                  h("span", { className: "dkarte__name" }, d.bezeichnung || "Neue Datei"),
+                  h("span", { className: "dkarte__meta" }, d.datei ? "Maße und Größe werden beim Veröffentlichen ermittelt"
+                    : [d.masse && d.masse + " px", d.typ, d.groesse].filter(Boolean).join(" · ") || "Noch keine Datei hochgeladen")
+                ),
+                h("div", { className: "dkarte__aktionen" }, h("span", { className: "btn btn--download" }, "Download"))
+              );
+            })
           )
         );
       }
     });
-    CMS.registerPreviewTemplate("formate", FormatVorschau);
+    ["formate_sparkassen", "formate_volksbanken", "formate_social", "formate_print"].forEach((n) => CMS.registerPreviewTemplate(n, FormatVorschau));
 
     // Symbole wie auf der Website (partials/icons.njk)
     const symbol = (pfade, groesse) => h("svg", { className: "ic", width: groesse, height: groesse, viewBox: "0 0 24 24", "aria-hidden": "true",

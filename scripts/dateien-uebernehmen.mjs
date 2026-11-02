@@ -76,7 +76,7 @@ for (const o of ORDNER) {
     const zielOrdner = path.join("src/assets/uploads", o, eintrag);
     let geaendert = false;
     const aufgaben = [];
-    for (const d of doc.data.dateien || []) {
+    for (const d of [...(doc.data.dateien || []), ...(doc.data.kanaele || []).flatMap((k) => k.dateien || [])]) {
       if (!d.datei && QUELLEN.test(d.link || "")) aufgaben.push([d, "link", "datei", sauber(d.bezeichnung || "datei")]);
     }
     if (QUELLEN.test(doc.data.steckbrief?.link || "")) aufgaben.push([doc.data.steckbrief, "link", "link", "steckbrief"]);

@@ -48,7 +48,7 @@ Die Navigation folgt dem alten Portal, ist aber nach Aufgaben sortiert: **Aktion
 | Bereich in der Redaktion | Datei(en) | Erscheint auf |
 |---|---|---|
 | Aktionen | `src/kampagnen/*.md` | Startseite („Was läuft gerade?“), /aktionen/, /aktionen/<name>/ |
-| Online-Formate | `src/formate/*.md` (ein Formatpaket je Kanal und Aktion) | Aktionsseite (Reiter je Zielgruppe), /formate/sparkassen/ usw. |
+| Formate Sparkassen / Volksbanken / Social Media / Print | `src/formate/<aktion>-<zielgruppe>.md` (je Aktion und Zielgruppe ein Eintrag, Kanäle als Liste) | Aktionsseite (Reiter je Zielgruppe), /formate/sparkassen/ usw. |
 | Werbemittel, Vertrieb & Service | `src/bereiche/<gruppe>-<name>.md` | /werbemittel/…, /vertrieb/…, /service/… |
 | Neu im Portal | `src/neuigkeiten/*.md` | Startseite |
 | Termine / Gewinnplan | `src/_data/termine.json`, `gewinne.json` | Startseite (nächste Termine), /termine-gewinne/ |
@@ -78,7 +78,7 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 ## Typische Redaktionsaufgaben
 
 - **Neue Aktion:** Unter „Aktionen“ anlegen, Bilder hochladen, Start- und Enddatum setzen, Highlights und Steckbrief eintragen. Die Startseite zeigt sie automatisch zum richtigen Zeitpunkt. Die rechte Vorschau zeigt die Karte so, wie sie auf der Startseite erscheint.
-- **Formate zur Aktion:** Unter „Online-Formate“ ein „Formatpaket“ anlegen (Aktion, Zielgruppe, Kanal) und die Dateien hinzufügen. Die Liste lässt sich nach Aktion gruppieren und nach Zielgruppe filtern.
+- **Formate zur Aktion:** Unter „Formate Sparkassen“ (bzw. Volksbanken, Social Media, Print) den Eintrag der Vorgänger-Aktion öffnen, „Duplizieren“ wählen, die Aktion umstellen und je Kanal die Dateien austauschen. Kanäle kommen aus einer festen Liste (in `src/admin/config.yml` erweiterbar), die Reihenfolge wird per Ziehen geändert.
 - **Werbemittel/Service-Seite pflegen:** Unter „Werbemittel, Vertrieb & Service“ die Seite öffnen, Text, Hinweis und Dateien ändern.
 - **Termine:** Unter „Termine, Gewinne & Kontakt“ → „Termine“ einen Sparmonat hinzufügen.
 

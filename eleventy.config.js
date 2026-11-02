@@ -44,6 +44,20 @@ const mitDateien = async (liste) => {
   for (const e of liste) for (const d of e.data.dateien || []) { dateiErgaenzen(d); await vorschauErzeugen(d); }
   return liste;
 };
+// Formate: Ein Eintrag je Aktion und Zielgruppe enthält die Kanäle als Liste.
+// Für die Seiten wird daraus ein Element je Kanal (wie früher ein „Formatpaket“).
+const kurzname = (s) => String(s).toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const nachKanaelen = (eintraege) => eintraege.flatMap((e) => {
+  const vergeben = new Set();
+  return (e.data.kanaele || []).map((k, i) => {
+    let slug = `${e.data.kampagne}-${e.data.zielgruppe}-${kurzname(k.kanal)}`;
+    if (vergeben.has(slug)) slug += `-${i + 1}`;
+    vergeben.add(slug);
+    return { fileSlug: slug, data: { title: k.kanal, beschreibung: k.beschreibung, dateien: k.dateien || [],
+      kampagne: e.data.kampagne, zielgruppe: e.data.zielgruppe, reihenfolge: i } };
+  });
+});
 const nachReihenfolge = (a, b) => (a.data.reihenfolge ?? 99) - (b.data.reihenfolge ?? 99);
 // Neuigkeiten: mit Datum zuerst (neueste oben), danach ohne Datum nach Reihenfolge
 const nachDatum = (a, b) => (b.data.datum || "").localeCompare(a.data.datum || "") || nachReihenfolge(a, b);
@@ -82,7 +96,7 @@ export default function (eleventyConfig) {
   eleventyConfig.ignores.add("src/admin/**");
 
   eleventyConfig.addCollection("kampagnen", (api) => api.getFilteredByGlob("src/kampagnen/*.md").map(steckbriefErgaenzen).sort(nachReihenfolge));
-  eleventyConfig.addCollection("formate", async (api) => (await mitDateien(api.getFilteredByGlob("src/formate/*.md"))).sort(nachReihenfolge));
+  eleventyConfig.addCollection("formate", async (api) => await mitDateien(nachKanaelen(api.getFilteredByGlob("src/formate/*.md"))));
   eleventyConfig.addCollection("bereiche", async (api) => (await mitDateien(api.getFilteredByGlob("src/bereiche/*.md"))).sort(nachReihenfolge));
   eleventyConfig.addCollection("neuigkeiten", (api) => api.getFilteredByGlob("src/neuigkeiten/*.md").sort(nachDatum));
   // „Neu“-Etikett: 30 Tage ab Datum (im Browser per JS nachgeprüft)
