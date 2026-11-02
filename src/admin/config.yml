@@ -11,8 +11,8 @@ local_backend: true
 
 locale: de
 logo_url: /assets/img/kleeblatt.svg
-site_url: https://marketing.sparverein.de
-display_url: https://marketing.sparverein.de
+site_url: https://sparverein-marketingportal.netlify.app
+display_url: https://sparverein-marketingportal.netlify.app
 
 media_folder: src/assets/uploads
 public_folder: /assets/uploads
@@ -38,13 +38,16 @@ collections:
       - { label: Titel, name: title, widget: string }
       - { label: Untertitel, name: untertitel, widget: string, required: false, hint: "Am besten bei jeder Aktion ausfüllen, damit die Karten gleich aufgebaut sind – z. B. „Juwelier-Gutschein“" }
       - { label: Art, name: typ, widget: select, options: [Sonderauslosung, Quartalskampagne, Produkt, Aktion] }
+      - { label: Titelbild, name: bild, widget: image, hint: "Pflicht: Kampagnenmotiv für den Kopfbereich der Aktionsseite – Format 1453×640 px (wie der „Header Marketingportal“). Erscheint auf Karte und Aktionsseite, solange kein Kartenbild hinterlegt ist." }
+      - { label: Kartenbild (optional), name: kartenbild, widget: image, required: false, hint: "Foto ohne Text, z. B. ein Motiv aus der Kampagne. Ersetzt das Titelbild auf der Startseite und im Kopf der Aktionsseite. Wird im Format 1453×640 zugeschnitten." }
       - { label: Start, name: start, widget: datetime, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false }
       - { label: Ende, name: ende, widget: datetime, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false }
       - { label: Dauerhaft (ohne Enddatum), name: dauerhaft, widget: boolean, default: false, required: false }
       - { label: Zeitraum (Anzeige), name: zeitraum, widget: string, hint: "Kurz, damit es auf der Karte in eine Zeile passt – z. B. „Losverkauf 11.11. bis 10.12.2026“" }
       - { label: Verlosung am, name: verlosung, widget: string, required: false }
-      - { label: Kurztext (Teaser), name: teaser, widget: text }
       - { label: Highlights / Gewinne, name: highlights, widget: list, min: 3, max: 3, hint: "Genau drei kurze Punkte mit je höchstens ca. 35 Zeichen (eine Zeile auf der Karte), z. B. „1× Opel Mokka“ – erscheinen auf der Startseite und der Aktionsseite.", field: { label: Punkt, name: punkt, widget: string, pattern: ['^.{1,40}$', "Bitte höchstens 40 Zeichen – sonst bricht der Punkt auf der Karte um."] } }
+      - { label: Kurztext (Teaser), name: teaser, widget: text }
+      - { label: Beschreibung, name: body, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
       - label: Kampagnensteckbrief
         name: steckbrief
         widget: object
@@ -53,9 +56,6 @@ collections:
           - { label: Linktext, name: text, widget: string, default: Kampagnensteckbrief }
           - { label: Link oder Datei, name: link, widget: file, required: false }
           - { label: Dateigröße, name: groesse, widget: string, required: false }
-      - { label: Beschreibung, name: body, widget: markdown, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
-      - { label: Titelbild, name: bild, widget: image, hint: "Pflicht: Kampagnenmotiv für den Kopfbereich der Aktionsseite – Format 1453×640 px (wie der „Header Marketingportal“). Erscheint auf Karte und Aktionsseite, solange kein Kartenbild hinterlegt ist." }
-      - { label: Kartenbild (optional), name: kartenbild, widget: image, required: false, hint: "Foto ohne Text, z. B. ein Motiv aus der Kampagne. Ersetzt das Titelbild auf der Startseite und im Kopf der Aktionsseite. Wird im Format 1453×640 zugeschnitten." }
       - label: Beispiele im Einsatz
         name: beispiele
         widget: list
