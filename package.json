@@ -14,6 +14,7 @@
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-img": "^7.1.1",
     "decap-server": "^3.1.0",
+    "fflate": "^0.8.2",
     "image-size": "^1.2.1"
   },
   "engines": {

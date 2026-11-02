@@ -89,6 +89,7 @@ eleventyComputed:
       <article class="kanal" id="{{ f.fileSlug }}">
         <header class="kanal__kopf">
           <div><h3>{{ f.data.title }}</h3>{% if f.data.beschreibung %}<p>{{ f.data.beschreibung }}</p>{% endif %}</div>
+          {% if f.data.zip %}<a class="btn btn--rand btn--klein" href="{{ f.data.zip | url }}" download>{{ icon("download", 16) }} Alle als ZIP</a>{% endif %}
         </header>
         {% set dateien = f.data.dateien %}{% include "partials/dateien.njk" %}
       </article>

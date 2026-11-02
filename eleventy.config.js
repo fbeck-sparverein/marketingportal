@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
 import Image from "@11ty/eleventy-img";
+import { unzipSync } from "fflate";
 
 // Hochgeladene Dateien: Typ, Größe und Pixelmaße automatisch ermitteln,
 // damit die Redaktion nur Datei + Bezeichnung pflegen muss.
@@ -14,7 +15,7 @@ function groesseLesbar(bytes) {
 function dateiErgaenzen(d) {
   if (!d || !d.datei || d._ergaenzt) return d;
   d._ergaenzt = true;
-  const lokal = path.join("src", decodeURI(d.datei));
+  const lokal = d._lokal || path.join("src", decodeURI(d.datei));
   const endung = path.extname(d.datei).slice(1).toUpperCase();
   if (endung) d.typ = endung === "JPEG" ? "JPG" : endung;
   try {
@@ -33,7 +34,7 @@ async function vorschauErzeugen(d) {
   if (!d?.datei || d.vorschau || d._vorschau !== undefined || !VORSCHAU_TYPEN.includes(d.typ)) return;
   d._vorschau = null;
   try {
-    const meta = await Image(path.join("src", decodeURI(d.datei)), {
+    const meta = await Image(d._lokal || path.join("src", decodeURI(d.datei)), {
       widths: [480], formats: ["webp"], outputDir: "_site/assets/vorschau/", urlPath: "/assets/vorschau/",
       sharpWebpOptions: { quality: 72 }, sharpOptions: { animated: false },
     });
@@ -48,13 +49,50 @@ const mitDateien = async (liste) => {
 // Für die Seiten wird daraus ein Element je Kanal (wie früher ein „Formatpaket“).
 const kurzname = (s) => String(s).toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
   .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// ZIP je Kanal: wird beim Bauen nach _site ausgepackt, jede Datei darin wird ein Eintrag.
+// Bezeichnung aus dem Dateinamen: Wörter, die in allen Dateien der ZIP vorkommen (z. B. „spk“, „quartal4“),
+// Jahreszahlen und Maße fallen weg.
+const ZIP_AUSGABE = "_site/assets/uploads/formate/_zip";
+const MASSE = /^(\d{2,5})x(\d{2,5})$/;
+const KLEIN = ["und", "mit", "ohne", "app", "neu", "los", "für"];
+const woerterAus = (name) => path.basename(name, path.extname(name)).toLowerCase().split(/[_\-\s]+/).filter(Boolean);
+function bezeichnungAus(woerter) {
+  const masse = woerter.find((w) => MASSE.test(w))?.replace("x", "×");
+  const text = woerter.filter((w) => !MASSE.test(w) && !/^20\d\d$/.test(w));
+  if (!text.some((w) => /[a-zäöü]/.test(w))) return ["Format", masse, text.length ? `Motiv ${text.join(" ")}` : ""].filter(Boolean).join(" ");
+  return text.map((w) => (w.length <= 3 && !KLEIN.includes(w) && /[a-z]/.test(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(" ");
+}
+function zipAuspacken(zip) {
+  let inhalt;
+  try { inhalt = unzipSync(fs.readFileSync(path.join("src", decodeURI(zip)))); }
+  catch (e) { console.warn("[zip]", zip, e.message); return []; }
+  const ordner = path.join(ZIP_AUSGABE, kurzname(path.basename(zip, ".zip")));
+  const dateien = Object.entries(inhalt)
+    .filter(([n, daten]) => daten.length && !n.endsWith("/") && !n.startsWith("__MACOSX/") && !path.basename(n).startsWith("."))
+    .map(([n, daten]) => ({ name: path.basename(n), daten, woerter: woerterAus(n) }))
+    .sort((a, b) => a.name.localeCompare(b.name, "de", { numeric: true }));
+  const gemeinsam = dateien.length > 1 ? dateien[0].woerter.filter((w) => dateien.every((d) => d.woerter.includes(w))) : [];
+  fs.mkdirSync(ordner, { recursive: true });
+  return dateien.map((d) => {
+    const endung = path.extname(d.name).toLowerCase();
+    const ziel = path.join(ordner, kurzname(path.basename(d.name, endung)) + endung);
+    fs.writeFileSync(ziel, d.daten);
+    const eigen = d.woerter.filter((w) => !gemeinsam.includes(w));
+    const eintrag = { bezeichnung: bezeichnungAus(eigen.length ? eigen : d.woerter), datei: "/" + path.relative("_site", ziel).split(path.sep).join("/"), _lokal: ziel };
+    // Maße aus dem Dateinamen nur für Formate, die sich nicht selbst vermessen lassen (z. B. PCX)
+    const m = d.woerter.find((w) => MASSE.test(w));
+    if (m && !BILDTYPEN.includes(endung.slice(1).toUpperCase())) eintrag.masse = m.replace("x", "×");
+    return eintrag;
+  });
+}
 const nachKanaelen = (eintraege) => eintraege.flatMap((e) => {
   const vergeben = new Set();
   return (e.data.kanaele || []).map((k, i) => {
     let slug = `${e.data.kampagne}-${e.data.zielgruppe}-${kurzname(k.kanal)}`;
     if (vergeben.has(slug)) slug += `-${i + 1}`;
     vergeben.add(slug);
-    return { fileSlug: slug, data: { title: k.kanal, beschreibung: k.beschreibung, dateien: k.dateien || [],
+    return { fileSlug: slug, data: { title: k.kanal, beschreibung: k.beschreibung, zip: k.zip,
+      dateien: [...(k.zip ? zipAuspacken(k.zip) : []), ...(k.dateien || [])],
       kampagne: e.data.kampagne, zielgruppe: e.data.zielgruppe, reihenfolge: i } };
   });
 });

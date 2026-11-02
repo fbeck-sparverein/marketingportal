@@ -78,7 +78,7 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 ## Typische Redaktionsaufgaben
 
 - **Neue Aktion:** Unter „Aktionen“ anlegen, Bilder hochladen, Start- und Enddatum setzen, Highlights und Steckbrief eintragen. Die Startseite zeigt sie automatisch zum richtigen Zeitpunkt. Die rechte Vorschau zeigt die Karte so, wie sie auf der Startseite erscheint.
-- **Formate zur Aktion:** Unter „Formate Sparkassen“ (bzw. Volksbanken, Social Media, Print) den Eintrag der Vorgänger-Aktion öffnen, „Duplizieren“ wählen, die Aktion umstellen und je Kanal die Dateien austauschen. Kanäle kommen aus einer festen Liste (in `src/admin/config.yml` erweiterbar), die Reihenfolge wird per Ziehen geändert.
+- **Formate zur Aktion:** Unter „Formate Sparkassen“ (bzw. Volksbanken, Social Media, Print) den Eintrag der Vorgänger-Aktion öffnen, „Duplizieren“ wählen, die Aktion umstellen und je Kanal die Dateien austauschen. Kanäle kommen aus einer festen Liste (in `src/admin/config.yml` erweiterbar), die Reihenfolge wird per Ziehen geändert. Statt Datei für Datei kann je Kanal eine **ZIP** hochgeladen werden: Sie wird beim Bauen nach `_site/assets/uploads/formate/_zip/` ausgepackt, jede Datei erscheint einzeln (Bezeichnung aus dem Dateinamen), und auf der Website gibt es „Alle als ZIP“.
 - **Werbemittel/Service-Seite pflegen:** Unter „Werbemittel, Vertrieb & Service“ die Seite öffnen, Text, Hinweis und Dateien ändern.
 - **Termine:** Unter „Termine, Gewinne & Kontakt“ → „Termine“ einen Sparmonat hinzufügen.
 

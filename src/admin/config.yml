@@ -97,9 +97,11 @@ collections:
         fields:
           - { label: Kanal, name: kanal, widget: select, options: ["Internet-Filiale", "App", "GAA, KAD & Filialbildschirme", "Sonstiges"] }
           - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - { label: Alle Dateien als ZIP, name: zip, widget: file, required: false, pattern: ['\.zip$', "Bitte eine ZIP-Datei wählen."], hint: "Statt Datei für Datei: alle Formate des Kanals als eine ZIP hochladen (am besten unter 25 MB). Beim Veröffentlichen wird sie ausgepackt; die Bezeichnungen entstehen aus den Dateinamen. Einzeln angelegte Dateien darunter erscheinen zusätzlich." }
           - label: Dateien
             name: dateien
             widget: list
+            required: false
             label_singular: Datei
             summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
             collapsed: true
@@ -138,9 +140,11 @@ collections:
         fields:
           - { label: Kanal, name: kanal, widget: select, options: ["Online-Filiale", "GAA & Bildschirme", "Sonstiges"] }
           - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - { label: Alle Dateien als ZIP, name: zip, widget: file, required: false, pattern: ['\.zip$', "Bitte eine ZIP-Datei wählen."], hint: "Statt Datei für Datei: alle Formate des Kanals als eine ZIP hochladen (am besten unter 25 MB). Beim Veröffentlichen wird sie ausgepackt; die Bezeichnungen entstehen aus den Dateinamen. Einzeln angelegte Dateien darunter erscheinen zusätzlich." }
           - label: Dateien
             name: dateien
             widget: list
+            required: false
             label_singular: Datei
             summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
             collapsed: true
@@ -171,9 +175,11 @@ collections:
         fields:
           - { label: Kanal, name: kanal, widget: select, options: ["Social-Media-Posts", "Sonstiges"] }
           - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - { label: Alle Dateien als ZIP, name: zip, widget: file, required: false, pattern: ['\.zip$', "Bitte eine ZIP-Datei wählen."], hint: "Statt Datei für Datei: alle Formate des Kanals als eine ZIP hochladen (am besten unter 25 MB). Beim Veröffentlichen wird sie ausgepackt; die Bezeichnungen entstehen aus den Dateinamen. Einzeln angelegte Dateien darunter erscheinen zusätzlich." }
           - label: Dateien
             name: dateien
             widget: list
+            required: false
             label_singular: Datei
             summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
             collapsed: true
@@ -204,9 +210,11 @@ collections:
         fields:
           - { label: Kanal, name: kanal, widget: select, options: ["Flyer & Plakat", "Sonstiges"] }
           - { label: Kurzbeschreibung, name: beschreibung, widget: string, required: false, hint: "z. B. „Header-Bilder für die Internet-Filiale (IF6).“" }
+          - { label: Alle Dateien als ZIP, name: zip, widget: file, required: false, pattern: ['\.zip$', "Bitte eine ZIP-Datei wählen."], hint: "Statt Datei für Datei: alle Formate des Kanals als eine ZIP hochladen (am besten unter 25 MB). Beim Veröffentlichen wird sie ausgepackt; die Bezeichnungen entstehen aus den Dateinamen. Einzeln angelegte Dateien darunter erscheinen zusätzlich." }
           - label: Dateien
             name: dateien
             widget: list
+            required: false
             label_singular: Datei
             summary: "{{fields.bezeichnung}} – {{fields.masse}} {{fields.typ}}"
             collapsed: true

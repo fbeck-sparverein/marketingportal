@@ -43,6 +43,8 @@
               k.beschreibung ? h("p", {}, k.beschreibung) : null
             )
           ),
+          k.zip ? h("p", { className: "hinweis-klein", style: { margin: "0 0 14px" } },
+            "ZIP: " + String(k.zip).split("/").pop() + " – wird beim Veröffentlichen ausgepackt, jede Datei erscheint einzeln.") : null,
           h("ul", { className: "dateien-raster" },
             dateien.map((d, i) => {
               const endung = String(d.datei || "").split(".").pop().toUpperCase();
