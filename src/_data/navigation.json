@@ -1,10 +1,10 @@
 [
-  { "titel": "Aktionen", "url": "/aktionen/", "quelle": "kampagnen", "text": "Alle laufenden und kommenden Aktionen mit Formaten und Steckbrief." },
-  { "titel": "Online-Formate", "url": "/formate/", "kinder": [
-      { "titel": "Sparkassen", "url": "/formate/sparkassen/", "text": "Internet-Filiale, App, GAA, KAD, POS" },
-      { "titel": "Volksbanken", "url": "/formate/volksbanken/", "text": "Online-Filiale, GAA & Bildschirme" },
-      { "titel": "Social Media", "url": "/formate/social/", "text": "Posts zu allen Aktionen" }
-    ], "text": "Banner und Bilder für Ihre digitalen Kanäle – nach Institut sortiert." },
+  { "titel": "Aktionen & Formate", "url": "/aktionen/", "auch": "/formate/", "quelle": "kampagnen", "text": "Alle laufenden und kommenden Aktionen mit Formaten und Steckbrief.",
+    "zusatz": { "titel": "Alle Formate für", "links": [
+      { "titel": "Sparkassen", "url": "/formate/sparkassen/" },
+      { "titel": "Volksbanken", "url": "/formate/volksbanken/" },
+      { "titel": "Social Media", "url": "/formate/social/" }
+    ] } },
   { "titel": "Werbemittel", "url": "/werbemittel/", "quelle": "werbemittel", "text": "Print, Social Media, Rubbel-Lose, Streuartikel und Promomaterial." },
   { "titel": "Vertrieb", "url": "/vertrieb/", "quelle": "vertrieb", "text": "Marketingplaner, Azubi-Projekte und Präsentation." },
   { "titel": "Termine & Gewinne", "url": "/termine-gewinne/", "kinder": [

@@ -72,6 +72,11 @@ kbd { font: 700 12px/1 "PT Sans", sans-serif; border: 1px solid currentColor; bo
 .mega__inner { width: min(100% - 48px, var(--container)); margin: 0 auto; display: grid; grid-template-columns: 300px 1fr; gap: 40px; padding: 32px 0 36px; }
 .mega__titel { font-size: 24px; font-weight: 700; color: var(--blau); margin-bottom: 6px; }
 .mega__alle { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.mega__zusatz { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--grau-20); }
+.mega__zusatz span { display: block; font-size: 14px; font-weight: 700; color: var(--grau); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+.mega__zusatz ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.mega__zusatz a { display: inline-block; padding: 6px 14px; border: 1px solid var(--blau-10); border-radius: 999px; font-size: 15px; font-weight: 700; text-decoration: none; }
+.mega__zusatz a:hover { background: var(--orange-10); border-color: var(--orange-20); }
 .mega__links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
 .mega__links a { display: block; padding: 14px 16px; border-radius: var(--radius-sm); text-decoration: none; border: 1px solid transparent; }
 .mega__links a:hover { background: var(--orange-10); border-color: var(--orange-20); }
@@ -399,6 +404,9 @@ html[data-institut="sparkassen"] .js-institut-karte[data-wert="sparkassen"], htm
   .mega__inner { width: 100%; grid-template-columns: 1fr; gap: 8px; padding: 4px 0 12px 12px; }
   .mega__intro p:not(.mega__titel) { display: none; }
   .mega__titel { display: none; }
+  .mega__inner:has(.mega__zusatz) { display: flex; flex-direction: column; }
+  .mega__inner:has(.mega__zusatz) .mega__intro { display: contents; }
+  .mega__zusatz { order: 2; margin-top: 4px; padding-top: 12px; }
   .mega__links { grid-template-columns: 1fr; }
   .aktion-intro { grid-template-columns: 1fr; gap: 28px; }
   .beispiele__raster { grid-template-columns: 1fr 1fr; }

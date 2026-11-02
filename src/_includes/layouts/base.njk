@@ -38,7 +38,7 @@
       <nav id="hauptnav" class="nav" aria-label="Hauptnavigation">
         <ul class="nav__liste">
           {%- for item in navigation %}
-          {%- set aktiv = page.url.startsWith(item.url) %}
+          {%- set aktiv = page.url.startsWith(item.url) or (item.auch and page.url.startsWith(item.auch)) %}
           <li class="nav__punkt">
             <button class="nav__oben js-menue" type="button" aria-expanded="false"{% if aktiv %} data-aktiv{% endif %}>
               {{ item.titel }} {{ icon("runter", 16) }}
@@ -49,6 +49,12 @@
                   <p class="mega__titel">{{ item.titel }}</p>
                   <p>{{ item.text }}</p>
                   <a class="mega__alle" href="{{ item.url | url }}">Zur Übersicht {{ icon("pfeil", 16) }}</a>
+                  {%- if item.zusatz %}
+                  <div class="mega__zusatz">
+                    <span>{{ item.zusatz.titel }}</span>
+                    <ul>{% for z in item.zusatz.links %}<li><a href="{{ z.url | url }}">{{ z.titel }}</a></li>{% endfor %}</ul>
+                  </div>
+                  {%- endif %}
                 </div>
                 <ul class="mega__links">
                   {%- if item.quelle == "kampagnen" %}
