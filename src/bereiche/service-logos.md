@@ -1,121 +1,65 @@
 ---
-title: "Logos"
+title: Logos
 gruppe: service
-kurz: "Sparverein-Logo in allen Varianten"
+kurz: Sparverein-Logo in allen Varianten
 reihenfolge: 2
-hinweis: "Bitte beachten Sie die Gestaltungsregeln im CD-Handbuch."
+hinweis: Bitte beachten Sie die Gestaltungsregeln im CD-Handbuch.
 dateien:
-  - bezeichnung: "CD-Handbuch Logo Sparverein"
-    typ: "PDF"
-    groesse: "2,1 MB"
-    link: "https://marketing.sparverein.de/media/download-66164b090d69c"
-  - bezeichnung: "Logo horizontal farbig"
-    typ: "SVG"
-    groesse: "19 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf2923a8"
-  - bezeichnung: "Logo horizontal schwarz"
-    typ: "SVG"
-    groesse: "18 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf2b76ac"
-  - bezeichnung: "Logo horizontal weiß"
-    typ: "SVG"
-    groesse: "19 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf2d5118"
-  - bezeichnung: "Logo vertikal farbig"
-    typ: "SVG"
-    groesse: "19 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf2ea7d4"
-  - bezeichnung: "Logo vertikal schwarz"
-    typ: "SVG"
-    groesse: "18 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf30ea21"
-  - bezeichnung: "Logo vertikal weiß"
-    typ: "SVG"
-    groesse: "19 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf32397f"
-  - bezeichnung: "Kleeblatt farbig"
-    typ: "SVG"
-    groesse: "3 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf218220"
-  - bezeichnung: "Kleeblatt schwarz"
-    typ: "SVG"
-    groesse: "3 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf24f61d"
-  - bezeichnung: "Kleeblatt weiß"
-    typ: "SVG"
-    groesse: "3 KB"
-    link: "https://marketing.sparverein.de/media/download-67becaf268428"
-  - bezeichnung: "Logo horizontal"
-    typ: "PNG"
-    groesse: "59 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b04cdc25"
-  - bezeichnung: "Logo horizontal"
-    typ: "JPG"
-    groesse: "112 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b04906d4"
-  - bezeichnung: "Logo horizontal schwarz"
-    typ: "PNG"
-    groesse: "79 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b0422784"
-  - bezeichnung: "Logo horizontal schwarz"
-    typ: "JPG"
-    groesse: "95 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b03df85f"
-  - bezeichnung: "Logo horizontal weiß"
-    typ: "PNG"
-    groesse: "57 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b044feeb"
-  - bezeichnung: "Logo vertikal"
-    typ: "PNG"
-    groesse: "88 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b06674c1"
-  - bezeichnung: "Logo vertikal"
-    typ: "JPG"
-    groesse: "159 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b062db8f"
-  - bezeichnung: "Logo vertikal schwarz"
-    typ: "PNG"
-    groesse: "119 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b057fc90"
-  - bezeichnung: "Logo vertikal schwarz"
-    typ: "JPG"
-    groesse: "140 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b052533a"
-  - bezeichnung: "Logo vertikal weiß"
-    typ: "PNG"
-    groesse: "88 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b05cd26a"
-  - bezeichnung: "Kleeblatt"
-    typ: "PNG"
-    groesse: "11 KB"
-    link: "https://marketing.sparverein.de/media/download-66164b038ce96"
-  - bezeichnung: "75 Jahre – horizontal farbig"
-    typ: "PNG"
-    groesse: "6 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55d6b533"
-  - bezeichnung: "75 Jahre – horizontal blau"
-    typ: "PNG"
-    groesse: "5 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55dbe1bf"
-  - bezeichnung: "75 Jahre – horizontal weiß"
-    typ: "PNG"
-    groesse: "5 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55e4de69"
-  - bezeichnung: "75 Jahre – kompakt farbig"
-    typ: "PNG"
-    groesse: "6 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55f37664"
-  - bezeichnung: "75 Jahre – kompakt blau"
-    typ: "PNG"
-    groesse: "6 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55e784e1"
-  - bezeichnung: "75 Jahre – kompakt schwarz"
-    typ: "PNG"
-    groesse: "6 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55eaaec7"
-  - bezeichnung: "75 Jahre – kompakt weiß"
-    typ: "PNG"
-    groesse: "5 KB"
-    link: "https://marketing.sparverein.de/media/download-68e3a55f0bf24"
+  - bezeichnung: CD-Handbuch Logo Sparverein
+    datei: /assets/uploads/bereiche/service-logos/corporate-design_auszug_logo.pdf
+  - bezeichnung: Logo horizontal farbig
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_1024px_farbig.svg
+  - bezeichnung: Logo horizontal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_1024px_schwarz.svg
+  - bezeichnung: Logo horizontal weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_1024px_weiss.svg
+  - bezeichnung: Logo vertikal farbig
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_1024px_farbig.svg
+  - bezeichnung: Logo vertikal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_1024px_schwarz.svg
+  - bezeichnung: Logo vertikal weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_1024px_weiss.svg
+  - bezeichnung: Kleeblatt farbig
+    datei: /assets/uploads/bereiche/service-logos/sv_kleeblatt_1024px_farbig.svg
+  - bezeichnung: Kleeblatt schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_kleeblatt_1024px_schwarz.svg
+  - bezeichnung: Kleeblatt weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_kleeblatt_1024px_weiss.svg
+  - bezeichnung: Logo horizontal
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal.png
+  - bezeichnung: Logo horizontal
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal.jpg
+  - bezeichnung: Logo horizontal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_schwarz.png
+  - bezeichnung: Logo horizontal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_schwarz.jpg
+  - bezeichnung: Logo horizontal weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_horizontal_white.png
+  - bezeichnung: Logo vertikal
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal.png
+  - bezeichnung: Logo vertikal
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal.jpg
+  - bezeichnung: Logo vertikal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_schwarz.png
+  - bezeichnung: Logo vertikal schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_schwarz.jpg
+  - bezeichnung: Logo vertikal weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_logo_vertikal_white.png
+  - bezeichnung: Kleeblatt
+    datei: /assets/uploads/bereiche/service-logos/sv_kleeblatt.png
+  - bezeichnung: 75 Jahre – horizontal farbig
+    datei: /assets/uploads/bereiche/service-logos/sparverein_jubilai-umslogo_final_.png
+  - bezeichnung: 75 Jahre – horizontal blau
+    datei: /assets/uploads/bereiche/service-logos/sparverein_jubilai-umslogo_final_250725_blau_horizontal.png
+  - bezeichnung: 75 Jahre – horizontal weiß
+    datei: /assets/uploads/bereiche/service-logos/sparverein_jubilai-umslogo_final_weia-.png
+  - bezeichnung: 75 Jahre – kompakt farbig
+    datei: /assets/uploads/bereiche/service-logos/sv_jubilai-umslogo.png
+  - bezeichnung: 75 Jahre – kompakt blau
+    datei: /assets/uploads/bereiche/service-logos/sv_jubilai-umslogo_blau.png
+  - bezeichnung: 75 Jahre – kompakt schwarz
+    datei: /assets/uploads/bereiche/service-logos/sv_jubilai-umslogo_schwarz.png
+  - bezeichnung: 75 Jahre – kompakt weiß
+    datei: /assets/uploads/bereiche/service-logos/sv_jubilai-umslogo_weia-.png
 ---
 Das Sparverein-Logo horizontal und vertikal, farbig, schwarz und weiß – als SVG für Web und Druck sowie als PNG/JPG. Dazu das Jubiläumslogo „75 Jahre“.

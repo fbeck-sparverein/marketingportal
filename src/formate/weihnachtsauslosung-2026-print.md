@@ -6,12 +6,8 @@ kanaele:
     beschreibung: Druckvorlagen als PDF.
     dateien:
       - bezeichnung: Plakat Weihnachtsauslosung 2026
-        typ: PDF
-        groesse: 1,03 MB
-        link: https://marketing.sparverein.de/media/download-6ac4b2faafc65
+        datei: /assets/uploads/formate/weihnachtsauslosung-2026-print/sv_weihnachtsauslosung2026_plakat_a1_v1_01.pdf
       - bezeichnung: Flyer Weihnachtsauslosung 2026
-        typ: PDF
-        groesse: 386 KB
-        link: https://marketing.sparverein.de/media/download-6ac4b2fb10f26
+        datei: /assets/uploads/formate/weihnachtsauslosung-2026-print/sv_weihnachtsauslosung2026_flyer_a4_v1_01.pdf
 ---
 

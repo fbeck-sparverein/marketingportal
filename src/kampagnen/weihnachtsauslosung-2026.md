@@ -13,7 +13,7 @@ highlights:
   - 4× Reise Amalfi-Küste (je 2.500 €)
 steckbrief:
   text: Kampagnensteckbrief
-  link: https://marketing.sparverein.de/media/download-6ac35a7755e08
+  link: /assets/uploads/kampagnen/weihnachtsauslosung-2026/kampagnensteckbrief_weihnachten26.pdf
   groesse: 2,06 MB
 reihenfolge: 1
 bild: /assets/uploads/kampagnen/weihnachtsauslosung-2026/header_weihnachtsauslosung_2026_marketingportal_1453x640.jpg

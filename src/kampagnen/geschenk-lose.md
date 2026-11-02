@@ -11,7 +11,7 @@ highlights:
   - Nur über sparverein-geschenklos.de
 steckbrief:
   text: Produktinformation Geschenk-Lose
-  link: https://marketing.sparverein.de/media/download-659bb3e7b3faf
+  link: /assets/uploads/kampagnen/geschenk-lose/ablauf_geschenklose.pdf
   groesse: 784 KB
 reihenfolge: 3
 bild: /assets/uploads/kampagnen/geschenk-lose/titelbild_geschenk-lose_1920x1080.jpg

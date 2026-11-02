@@ -25,7 +25,6 @@ Jeder Commit auf `main`, auch aus der Redaktion, baut die Seite bei Netlify in e
 - **Zugang für die Banken:** Team-Login ersetzen, z. B. durch ein gemeinsames Passwort (Netlify Pro).
 - **Domain umstellen (einmalig, durch den DNS-Verwalter):** In Netlify unter Domain-Verwaltung `marketing.sparverein.de` hinzufügen. Netlify zeigt den nötigen DNS-Eintrag (CNAME auf `sparverein-marketingportal.netlify.app`). Das SSL-Zertifikat erstellt Netlify automatisch. Danach `site_url`/`display_url` in `src/admin/config.yml` anpassen.
 - **Datenschutz:** Auftragsverarbeitungsvertrag mit Netlify (US-Anbieter) mit dem Datenschutzbeauftragten klären, Datenschutzerklärung ergänzen.
-- **Restliche Dateien übernehmen:** Siehe „Dateien aus dem alten Portal übernehmen“.
 
 ## Lokal starten
 
@@ -95,8 +94,8 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 
 ## Offene Punkte
 
-- **Dateiübernahme:** Die drei Aktionen (Weihnachtsauslosung, Q4, Geschenk-Lose) liegen vollständig im CMS. Werbemittel, Vertrieb und Service verweisen noch auf das alte Portal → Übernahme-Skript ausführen.
-- **Fehlt noch:** Flyer & Plakat zur Weihnachtsauslosung, Dateien für „Promomaterialien“, Mockups zu Geschenk-Lose mit neuem Logo.
+- **Dateiübernahme:** erledigt (02.11.2026) – alle 68 Downloads aus dem alten Portal liegen im CMS, es gibt keine Links mehr auf marketing.sparverein.de.
+- **Fehlt noch:** Dateien für „Promomaterialien“, Mockups zu Geschenk-Lose mit neuem Logo.
 - **Gewinnplan prüfen:** Das alte Portal nennt „Opel Corsa Mokka“, hier steht „Opel Mokka“. Die drei Zeilen à 6.300 × 5 EUR sind zu 18.900 × 5 EUR zusammengefasst.
 - **CD-Frage:** Weißes Logo auf dunkelblauem Fußbereich – laut CD-Auszug ist die weiße Version für Orange und Bilder vorgesehen.
 - **Vorschaubilder:** entstehen automatisch für JPG, PNG, GIF und WEBP. BMP, PCX und PDF zeigen einen Platzhalter mit dem Seitenverhältnis.

@@ -1,36 +1,22 @@
 ---
-title: "Flyer & Plakate"
+title: Flyer & Plakate
 gruppe: werbemittel
-kurz: "Aktuelle Printmittel als PDF"
+kurz: Aktuelle Printmittel als PDF
 reihenfolge: 1
 dateien:
-  - bezeichnung: "Flyer Weihnachtsauslosung 2026"
-    typ: "PDF"
-    groesse: "386 KB"
-    link: "https://marketing.sparverein.de/media/download-6ac4b2fb10f26"
-  - bezeichnung: "Plakat Weihnachtsauslosung 2026"
-    typ: "PDF"
-    groesse: "1,03 MB"
-    link: "https://marketing.sparverein.de/media/download-6ac4b2faafc65"
-  - bezeichnung: "Flyer 2. Halbjahr 2026"
-    typ: "PDF"
-    groesse: "415 KB"
-    link: "https://marketing.sparverein.de/media/download-6a1d33be9d2e4"
-  - bezeichnung: "Plakat 2. Halbjahr 2026"
-    typ: "PDF"
-    groesse: "738 KB"
-    link: "https://marketing.sparverein.de/media/download-6a1d33bf46e7f"
-  - bezeichnung: "Plakat „Hier gewonnen: Opel Mokka“"
-    typ: "PDF"
-    groesse: "525 KB"
-    link: "https://marketing.sparverein.de/media/download-69395f661ef53"
-  - bezeichnung: "Flyer Geschenk-Los"
-    typ: "PDF"
-    groesse: "4,5 MB"
-    link: "https://marketing.sparverein.de/media/download-68301ca7a86ec"
-  - bezeichnung: "Plakat Geschenk-Los"
-    typ: "PDF"
-    groesse: "6,63 MB"
-    link: "https://marketing.sparverein.de/media/download-68301ca67cecd"
+  - bezeichnung: Flyer Weihnachtsauslosung 2026
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/sv_weihnachtsauslosung2026_flyer_a4_v1_01.pdf
+  - bezeichnung: Plakat Weihnachtsauslosung 2026
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/sv_weihnachtsauslosung2026_plakat_a1_v1_01.pdf
+  - bezeichnung: Flyer 2. Halbjahr 2026
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/sv_flyer_q3_q4_2026_din-lang_v2_01-1.pdf
+  - bezeichnung: Plakat 2. Halbjahr 2026
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/sv_imageplakat_q3_q4_2026_a1_v3_01.pdf
+  - bezeichnung: 'Plakat „Hier gewonnen: Opel Mokka“'
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/sv_flyer_q1_2026_din-lang_v2_01_251114_ansicht.pdf
+  - bezeichnung: Flyer Geschenk-Los
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/va-2503016_sv_geschenklos_flyer_2025_v1.pdf
+  - bezeichnung: Plakat Geschenk-Los
+    datei: /assets/uploads/bereiche/werbemittel-flyer-plakate/va-2503016_sv_geschenklos_plakat_2025_v1.pdf
 ---
 Die aktuellen Printmittel zum GewinnSparen als PDF-Download – zum Ausdrucken oder für Ihre Druckerei.
