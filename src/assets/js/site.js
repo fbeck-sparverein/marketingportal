@@ -36,6 +36,9 @@
     el.className = el.className.replace(/chip--(laeuft|bald|beendet|dauerhaft)/, "chip--" + code);
   });
 
+  // „Neu“-Etikett nach 30 Tagen ausblenden (die Seite wird nicht täglich neu gebaut)
+  $$(".js-neu").forEach((el) => { el.hidden = new Date(el.dataset.bis + "T00:00:00") < heute; });
+
   // ── Institut wählen (Sparkasse / Volksbank) ─────────────
   function setzeInstitut(wert, melden) {
     document.documentElement.dataset.institut = wert;

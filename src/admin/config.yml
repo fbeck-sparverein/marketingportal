@@ -1,10 +1,12 @@
 # Redaktionsoberfläche (Decap CMS) – Marketingportal Sparverein
 # Anmeldung über Netlify Identity + Git Gateway (Redakteure brauchen kein GitHub-Konto).
-# „Veröffentlichen“ geht direkt online (kein Freigabe-Workflow).
+# Freigabe-Workflow: Entwurf → Zur Prüfung → Bereit; erst „Veröffentlichen“ geht online.
 
 backend:
   name: git-gateway
   branch: main
+
+publish_mode: editorial_workflow
 
 # Nur für lokale Tests auf dem eigenen Rechner ("npm run cms"); online ohne Wirkung
 local_backend: true
@@ -55,7 +57,7 @@ collections:
         fields:
           - { label: Linktext, name: text, widget: string, default: Kampagnensteckbrief }
           - { label: Link oder Datei, name: link, widget: file, required: false }
-          - { label: Dateigröße, name: groesse, widget: string, required: false }
+          - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt – nur bei externen Links nötig" }
       - label: Beispiele im Einsatz
         name: beispiele
         widget: list
@@ -113,7 +115,7 @@ collections:
           - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
           - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
           - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
-          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, BMP, PCX, SVG, PDF, MP4, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
+          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, WEBP, SVG, BMP, PCX, PDF, MP4, MOV, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
           - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
           - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
           - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
@@ -164,7 +166,7 @@ collections:
           - { label: Datei, name: datei, widget: file, required: false, hint: "Datei hochladen. Typ, Größe und bei Bildern die Pixelmaße werden automatisch ermittelt." }
           - { label: Maße (Pixel), name: masse, widget: string, required: false, pattern: ['^(\d+\s*[x×]\s*\d+)?$', 'Bitte als Breite×Höhe angeben, z. B. 2400×1050'], hint: "Nur nötig, wenn die Datei kein Bild ist, aber für ein bestimmtes Format gedacht ist (z. B. Video 1920×1080)" }
           - { label: Seitenverhältnis, name: seitenverhaeltnis, widget: string, required: false, hint: "Nur falls keine Maße bekannt, z. B. 3:2" }
-          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, BMP, PCX, SVG, PDF, MP4, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
+          - { label: Dateityp, name: typ, widget: select, required: false, options: [JPG, PNG, GIF, WEBP, SVG, BMP, PCX, PDF, MP4, MOV, ZIP], hint: "Wird bei hochgeladenen Dateien automatisch erkannt" }
           - { label: Dateigröße, name: groesse, widget: string, required: false, hint: "Wird bei hochgeladenen Dateien automatisch ermittelt" }
           - { label: Vorschaubild, name: vorschau, widget: image, required: false, hint: "Optional – sonst erscheint ein Platzhalter im passenden Seitenverhältnis" }
           - { label: Externer Link (Ausnahme), name: link, widget: string, required: false, hint: "Nur falls die Datei nicht hochgeladen werden kann, z. B. sehr große Videos" }
@@ -176,11 +178,13 @@ collections:
     folder: src/neuigkeiten
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    summary: "{{title}}"
+    summary: "{{title}} – {{datum}}"
+    sortable_fields: [datum, title]
     fields:
       - { label: Überschrift, name: title, widget: string }
+      - { label: Datum, name: datum, widget: datetime, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, hint: "Neueste stehen oben. 30 Tage lang erscheint das Etikett „Neu“, danach verschwindet es von selbst." }
       - { label: Link, name: link, widget: string, required: false, hint: "z. B. /vertrieb/marketingplaner/" }
-      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 1, hint: "1 = ganz oben; die ersten beiden bekommen das Etikett „Neu“" }
+      - { label: Reihenfolge, name: reihenfolge, widget: number, value_type: int, default: 1, required: false, hint: "Nur für Einträge ohne Datum: 1 = ganz oben" }
 
   # ───────────────────────────── Einstellungen ─────────────────────────────
   - name: einstellungen

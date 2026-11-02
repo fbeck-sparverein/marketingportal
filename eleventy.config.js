@@ -45,6 +45,18 @@ const mitDateien = async (liste) => {
   return liste;
 };
 const nachReihenfolge = (a, b) => (a.data.reihenfolge ?? 99) - (b.data.reihenfolge ?? 99);
+// Neuigkeiten: mit Datum zuerst (neueste oben), danach ohne Datum nach Reihenfolge
+const nachDatum = (a, b) => (b.data.datum || "").localeCompare(a.data.datum || "") || nachReihenfolge(a, b);
+// Kampagnensteckbrief: Typ und Größe ermitteln, wenn die Datei im Portal liegt
+function steckbriefErgaenzen(k) {
+  const sb = k.data.steckbrief;
+  if (!sb?.link || !sb.link.startsWith("/") || sb._ergaenzt) return k;
+  sb._ergaenzt = true;
+  const endung = path.extname(sb.link).slice(1).toUpperCase();
+  if (endung) sb.typ = endung;
+  try { sb.groesse = groesseLesbar(fs.statSync(path.join("src", decodeURI(sb.link))).size); } catch { /* Angabe aus dem CMS bleibt */ }
+  return k;
+}
 
 // Status einer Aktion relativ zu "heute" (wird im Browser per JS aktualisiert)
 function aktionsStatus(k, heute = new Date()) {
@@ -69,10 +81,16 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/**");
 
-  eleventyConfig.addCollection("kampagnen", (api) => api.getFilteredByGlob("src/kampagnen/*.md").sort(nachReihenfolge));
+  eleventyConfig.addCollection("kampagnen", (api) => api.getFilteredByGlob("src/kampagnen/*.md").map(steckbriefErgaenzen).sort(nachReihenfolge));
   eleventyConfig.addCollection("formate", async (api) => (await mitDateien(api.getFilteredByGlob("src/formate/*.md"))).sort(nachReihenfolge));
   eleventyConfig.addCollection("bereiche", async (api) => (await mitDateien(api.getFilteredByGlob("src/bereiche/*.md"))).sort(nachReihenfolge));
-  eleventyConfig.addCollection("neuigkeiten", (api) => api.getFilteredByGlob("src/neuigkeiten/*.md").sort(nachReihenfolge));
+  eleventyConfig.addCollection("neuigkeiten", (api) => api.getFilteredByGlob("src/neuigkeiten/*.md").sort(nachDatum));
+  // „Neu“-Etikett: 30 Tage ab Datum (im Browser per JS nachgeprüft)
+  eleventyConfig.addFilter("neuBis", (datum) => {
+    if (!datum) return "";
+    const d = new Date(datum + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 30);
+    return d.toISOString().slice(0, 10);
+  });
 
   // ── Filter ──────────────────────────────────────────────
   // Verkleinerte Fassung eines hochgeladenen Bildes (z. B. Mockups, Titelbild)

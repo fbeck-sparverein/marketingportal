@@ -68,7 +68,7 @@ bodyClass: start
         {%- set bereichsnamen = { "aktionen": "Aktion", "formate": "Online-Formate", "werbemittel": "Werbemittel", "vertrieb": "Vertrieb", "service": "Service", "termine-gewinne": "Termine & Gewinne" } %}
         {%- for n in collections.neuigkeiten | head(5) %}
         <li><a href="{{ n.data.link | url }}">
-          <span class="neu-liste__text"><strong>{{ n.data.title }}</strong><span>{% if loop.index <= 2 %}<span class="chip chip--neu chip--mini">Neu</span>{% endif %}{{ bereichsnamen[n.data.link.split("/")[1]] or "Portal" }}</span></span>
+          <span class="neu-liste__text"><strong>{{ n.data.title }}</strong><span>{% if n.data.datum %}{% set bis = n.data.datum | neuBis %}<span class="chip chip--neu chip--mini js-neu" data-bis="{{ bis }}"{% if bis < ("" | heuteIso) %} hidden{% endif %}>Neu</span>{% elif loop.index <= 2 %}<span class="chip chip--neu chip--mini">Neu</span>{% endif %}{{ bereichsnamen[n.data.link.split("/")[1]] or "Portal" }}</span></span>
           {{ icon("pfeil", 18) }}</a></li>
         {%- endfor %}
       </ul>

@@ -22,7 +22,7 @@ eleventyComputed:
       <p class="lead">{{ k.data.teaser }}</p>
       <div class="aktion-kopf__knoepfe">
         <a class="btn btn--primaer" href="#formate">Zu den Formaten {{ icon("runter", 18) }}</a>
-        {% if k.data.steckbrief %}<a class="btn btn--hell" href="{{ k.data.steckbrief.link }}">{{ icon("dokument", 18) }} {{ k.data.steckbrief.text }} <small>PDF{% if k.data.steckbrief.groesse %}, {{ k.data.steckbrief.groesse }}{% endif %}</small></a>{% endif %}
+        {% if k.data.steckbrief %}<a class="btn btn--hell" href="{{ k.data.steckbrief.link }}">{{ icon("dokument", 18) }} {{ k.data.steckbrief.text }} <small>{{ k.data.steckbrief.typ or "PDF" }}{% if k.data.steckbrief.groesse %}, {{ k.data.steckbrief.groesse }}{% endif %}</small></a>{% endif %}
       </div>
     </div>
     {%- if kopfbild %}<figure class="kopfbild"><img src="{{ kopfbild | verkleinert(1200) | url }}" alt="Kampagnenmotiv {{ k.data.title }}"></figure>{% endif %}
