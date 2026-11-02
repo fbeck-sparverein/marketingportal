@@ -6,26 +6,26 @@ Statische Website (Eleventy) mit Redaktionsoberfläche (Decap CMS) als Nachfolge
 - **Pflege im Browser** unter `/admin/`. Jede Änderung wird als Commit im Git-Repository gespeichert und löst automatisch einen neuen Build aus.
 - **Design** nach dem Sparverein Corporate Design (Farben, PT Sans, offizielles Logo). Die Schriften liegen lokal. Einzige externe Verbindung: das Anmelde-Skript von Netlify im Redaktionsbereich `/admin/`.
 
-## Von der ZIP zur Testseite (ohne IT)
+## Wo läuft was?
 
-Benötigt: ein GitHub-Konto (kostenlos, am besten für den Sparverein) und ein Netlify-Konto (kostenlos, Anmeldung mit GitHub).
+| | |
+|---|---|
+| Code | GitHub: `fbeck-sparverein/marketingportal` (öffentlich), Branch `main` |
+| Testseite | https://sparverein-marketingportal.netlify.app (zurzeit nur mit Netlify-Team-Login) |
+| Redaktion | https://sparverein-marketingportal.netlify.app/admin/ (Netlify Identity, nur auf Einladung) |
 
-**1. In Claude Code** den entpackten Projektordner öffnen und eingeben:
+Jeder Commit auf `main`, auch aus der Redaktion, baut die Seite bei Netlify in ein bis zwei Minuten neu. Die Build-Einstellungen stehen in `netlify.toml`. Testadressen sind für Suchmaschinen gesperrt (noindex), nur die echte Domain wird später indexiert.
 
-> Lege ein privates GitHub-Repository „sparverein-marketingportal“ an, committe das Projekt (node_modules und _site sind per .gitignore ausgeschlossen) und pushe es auf den Branch main. Prüfe vorher mit `npm install && npm run build`, dass der Build fehlerfrei durchläuft.
+**Redakteure einladen:** Netlify → Projekt → Identity → „Invite users“. Sie klicken den Link in der Einladung, legen ein Passwort fest und landen unter `/admin/`. Ein GitHub-Konto brauchen sie nicht. Solange der Team-Login aktiv ist, kommen sie allerdings nur mit Netlify-Konto auf die Seite.
 
-**2. Bei Netlify:** Neues Projekt → „Import from Git“ → GitHub → Repository auswählen → Deploy. Die Einstellungen kommen automatisch aus `netlify.toml`. Nach ein bis zwei Minuten ist die Seite unter `https://<name>.netlify.app` online. Testadressen sind für Suchmaschinen gesperrt (noindex), nur die echte Domain wird später indexiert.
+**Git Gateway** (Verbindung Redaktion → GitHub) ist bei Netlify als veraltet markiert, läuft aber weiter. Falls es abgeschaltet wird: siehe „Alternativen zu Netlify“.
 
-**3. Redaktionssystem freischalten** (in den Netlify-Projekteinstellungen):
-- **Identity** aktivieren, Registrierung auf **„Invite only“** stellen.
-- Unter Identity → Services **Git Gateway** aktivieren.
-- Redakteure per E-Mail einladen. Sie klicken den Link in der Einladung, legen ein Passwort fest und landen unter `/admin/`. Ein GitHub-Konto brauchen sie nicht.
+### Noch offen für den Livegang
 
-**4. Restliche Dateien übernehmen:** Siehe „Dateien aus dem alten Portal übernehmen“ – in Claude Code auf dem eigenen Rechner ausführen, danach committen und pushen.
-
-**5. Domain umstellen (einmalig, durch den DNS-Verwalter):** In Netlify unter Domain-Verwaltung `marketing.sparverein.de` hinzufügen. Netlify zeigt den nötigen DNS-Eintrag (CNAME auf `<name>.netlify.app`). Das SSL-Zertifikat erstellt Netlify automatisch.
-
-Vorher klären: Auftragsverarbeitungsvertrag mit Netlify (US-Anbieter) mit dem Datenschutzbeauftragten, Datenschutzerklärung ergänzen.
+- **Zugang für die Banken:** Team-Login ersetzen, z. B. durch ein gemeinsames Passwort (Netlify Pro).
+- **Domain umstellen (einmalig, durch den DNS-Verwalter):** In Netlify unter Domain-Verwaltung `marketing.sparverein.de` hinzufügen. Netlify zeigt den nötigen DNS-Eintrag (CNAME auf `sparverein-marketingportal.netlify.app`). Das SSL-Zertifikat erstellt Netlify automatisch. Danach `site_url`/`display_url` in `src/admin/config.yml` anpassen.
+- **Datenschutz:** Auftragsverarbeitungsvertrag mit Netlify (US-Anbieter) mit dem Datenschutzbeauftragten klären, Datenschutzerklärung ergänzen.
+- **Restliche Dateien übernehmen:** Siehe „Dateien aus dem alten Portal übernehmen“.
 
 ## Lokal starten
 
@@ -77,7 +77,7 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 
 ## Typische Redaktionsaufgaben
 
-- **Neue Aktion:** Unter „Aktionen“ anlegen, Start- und Enddatum setzen, Highlights und Steckbrief eintragen. Die Startseite zeigt sie automatisch zum richtigen Zeitpunkt. Die rechte Vorschau zeigt die Karte so, wie sie auf der Startseite erscheint.
+- **Neue Aktion:** Unter „Aktionen“ anlegen, Bilder hochladen, Start- und Enddatum setzen, Highlights und Steckbrief eintragen. Die Startseite zeigt sie automatisch zum richtigen Zeitpunkt. Die rechte Vorschau zeigt die Karte so, wie sie auf der Startseite erscheint.
 - **Formate zur Aktion:** Unter „Online-Formate“ ein „Formatpaket“ anlegen (Aktion, Zielgruppe, Kanal) und die Dateien hinzufügen. Die Liste lässt sich nach Aktion gruppieren und nach Zielgruppe filtern.
 - **Werbemittel/Service-Seite pflegen:** Unter „Werbemittel, Vertrieb & Service“ die Seite öffnen, Text, Hinweis und Dateien ändern.
 - **Termine:** Unter „Termine, Gewinne & Kontakt“ → „Termine“ einen Sparmonat hinzufügen.
@@ -85,7 +85,8 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 ## Redaktionsregeln (im CMS hinterlegt)
 
 - **Aktionen:** genau drei Highlights; Titelbild ist Pflicht (Format 1453×640 px, wie der „Header Marketingportal“).
-- **Veröffentlichen** geht direkt online (kein Freigabe-Workflow). Jede Änderung ist in Git gespeichert und kann zurückgeholt werden.
+- **Freigabe-Workflow:** Gespeicherte Änderungen landen unter „Arbeitsablauf“ (Entwurf → Zur Prüfung → Bereit) und erscheinen auf GitHub als Pull Request. Erst „Veröffentlichen“ bringt sie online. Jede Änderung ist in Git gespeichert und kann zurückgeholt werden. Lokal (`npm run cms`) gibt es keinen Workflow, dort wird direkt gespeichert.
+- **Neu im Portal:** jeder Eintrag mit Datum; die neuesten stehen oben, das Etikett „Neu“ verschwindet nach 30 Tagen von selbst.
 - **Dateien** werden hochgeladen; Typ, Größe, Maße und Vorschaubild ermittelt die Seite selbst.
 
 ## Alternativen zu Netlify
@@ -98,5 +99,5 @@ Es muss auf einem Rechner laufen, der beide Server erreicht (z. B. im Büronetz)
 - **Fehlt noch:** Flyer & Plakat zur Weihnachtsauslosung, Dateien für „Promomaterialien“, Mockups zu Geschenk-Lose mit neuem Logo.
 - **Gewinnplan prüfen:** Das alte Portal nennt „Opel Corsa Mokka“, hier steht „Opel Mokka“. Die drei Zeilen à 6.300 × 5 EUR sind zu 18.900 × 5 EUR zusammengefasst.
 - **CD-Frage:** Weißes Logo auf dunkelblauem Fußbereich – laut CD-Auszug ist die weiße Version für Orange und Bilder vorgesehen.
-- **Vorschaubilder:** entstehen automatisch für JPG, PNG und GIF. BMP, PCX und PDF zeigen einen Platzhalter mit dem Seitenverhältnis.
+- **Vorschaubilder:** entstehen automatisch für JPG, PNG, GIF und WEBP. BMP, PCX und PDF zeigen einen Platzhalter mit dem Seitenverhältnis.
 - **Optional später:** Brevo-Anmeldung „Updates per E-Mail“ mit RSS-Feed aus „Neu im Portal“.
