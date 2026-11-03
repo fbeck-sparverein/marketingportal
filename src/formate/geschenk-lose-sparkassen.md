@@ -3,7 +3,7 @@ kampagne: geschenk-lose
 zielgruppe: sparkassen
 kanaele:
   - kanal: Internet-Filiale
-    beschreibung: Header-Bilder für die Internet-Filiale (IF6).
+    beschreibung: " Test Header-Bilder für die Internet-Filiale (IF6)."
     dateien:
       - bezeichnung: Header, Motiv 1
         masse: 2400×1050
@@ -57,4 +57,3 @@ kanaele:
         masse: 2550×1440
         datei: /assets/uploads/formate/geschenk-lose-sparkassen-gaa-kad-und-filialbildschirme/geschenk-lose_unifit-breit-2550x1440.jpg
 ---
-
